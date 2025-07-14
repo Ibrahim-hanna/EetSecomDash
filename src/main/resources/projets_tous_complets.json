@@ -1,0 +1,626 @@
+[
+  {
+    "client": "KENZI TOWER HOTEL",
+    "numeroProjet": "KTH-EDET",
+    "designation": "REMPLACEMENT DU SYSTEME DE SECURITE INCENDIE KENZI TOWER HOTEL",
+    "typeProjet": "Détection incendie",
+    "responsableInterne": "HICHAM, RAJAA",
+    "responsableExterne": "REDOUANE DAROUI",
+    "dureeContractuelle": "4 Mois",
+    "dateDebut": "5/29/2024",
+    "dateFinEffective": "2/6/2025",
+    "avancement": "100%",
+    "statutExecution": "Terminé",
+    "montantContratTTC": "1,586,032.64",
+    "montantAvenant": "69,600.00",
+    "montantCumul": "1,547,369.54",
+    "montantEncaisse": "1,392,632.59",
+    "soldeRestant": "154,736.95",
+    "statutFacturation": "Payé avec retenue 10%",
+    "remarques": null,
+    "piecesJointes": {
+      "contrat": {
+        "nomFichier": "Contrat_KTH-EDET.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "pvReceptionProvisoire": {
+        "nomFichier": "PV_Provisoire_KTH-EDET.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "pvReceptionDefinitive": {
+        "nomFichier": "PV_Definitive_KTH-EDET.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "attestationReference": {
+        "nomFichier": "Attestation_Reference_KTH-EDET.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "suiviExecutionDetaille": {
+        "nomFichier": "Suivi_Execution_KTH-EDET.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "suiviReglementDetaille": {
+        "nomFichier": "Suivi_Reglement_KTH-EDET.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      }
+    }
+  },
+  {
+    "client": "UNIVERSITE ALAKHAWAYN",
+    "numeroProjet": "AUI-EDET",
+    "designation": "CONSTRUCTION DE L'EXTENSION DE L'AUI- BÂTIMENT ACADEMIQUE AL AKHAWAYN - IFRANE",
+    "typeProjet": "GTC",
+    "responsableInterne": "RAJAA",
+    "responsableExterne": "Bencheikh Soumia",
+    "dureeContractuelle": "4 Mois",
+    "dateDebut": "8/27/2024",
+    "dateFinEffective": "",
+    "avancement": "80%",
+    "statutExecution": "En cours",
+    "montantContratTTC": "580,269.50",
+    "montantAvenant": "N/A",
+    "montantCumul": "298,448.50",
+    "montantEncaisse": "298,448.50",
+    "soldeRestant": "",
+    "statutFacturation": "",
+    "remarques": "Ce marché a reçu l'exonération, les décomptes sont déposés en HT",
+    "piecesJointes": {
+      "contrat": {
+        "nomFichier": "Contrat_AUI-EDET.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "pvReceptionProvisoire": {
+        "nomFichier": "PV_Provisoire_AUI-EDET.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "pvReceptionDefinitive": {
+        "nomFichier": "PV_Definitive_AUI-EDET.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "attestationReference": {
+        "nomFichier": "Attestation_Reference_AUI-EDET.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "suiviExecutionDetaille": {
+        "nomFichier": "Suivi_Execution_AUI-EDET.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "suiviReglementDetaille": {
+        "nomFichier": "Suivi_Reglement_AUI-EDET.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      }
+    }
+  },
+  {
+    "client": "OCP JORF",
+    "numeroProjet": "28430",
+    "designation": "REMISE EN ETAT DE SYSTÈME DETECTION ET EXTINCTION D'INCENDIE (Unité d'ammoniac U255)",
+    "typeProjet": "Protection incendie",
+    "responsableInterne": "HICHAM, RAJAA",
+    "responsableExterne": "MOUIH ACHRAF",
+    "dureeContractuelle": "4 Mois",
+    "dateDebut": "",
+    "dateFinEffective": "",
+    "avancement": "",
+    "statutExecution": "Terminé",
+    "montantContratTTC": "",
+    "montantAvenant": "N/A",
+    "montantCumul": "",
+    "montantEncaisse": "",
+    "soldeRestant": "",
+    "statutFacturation": "",
+    "remarques": "",
+    "piecesJointes": {
+      "contrat": {
+        "nomFichier": "Contrat_28430.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "pvReceptionProvisoire": {
+        "nomFichier": "PV_Provisoire_28430.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "pvReceptionDefinitive": {
+        "nomFichier": "PV_Definitive_28430.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "attestationReference": {
+        "nomFichier": "Attestation_Reference_28430.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "suiviExecutionDetaille": {
+        "nomFichier": "Suivi_Execution_28430.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "suiviReglementDetaille": {
+        "nomFichier": "Suivi_Reglement_28430.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      }
+    }
+  },
+  {
+    "client": "OCP KHOURIBGA",
+    "numeroProjet": "1676K",
+    "designation": "Fourniture, installation et mise en service d’un système de détection et d’extinction automatique approuve FM pour les dragline m8400 et M7900",
+    "typeProjet": "Protection incendie",
+    "responsableInterne": "HICHAM, RAJAA",
+    "responsableExterne": "SAHIR ADNANE",
+    "dureeContractuelle": "2 Mois",
+    "dateDebut": "",
+    "dateFinEffective": "",
+    "avancement": "",
+    "statutExecution": "Terminé",
+    "montantContratTTC": "",
+    "montantAvenant": "",
+    "montantCumul": "",
+    "montantEncaisse": "",
+    "soldeRestant": "",
+    "statutFacturation": "",
+    "remarques": "",
+    "piecesJointes": {
+      "contrat": {
+        "nomFichier": "Contrat_1676K.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "pvReceptionProvisoire": {
+        "nomFichier": "PV_Provisoire_1676K.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "pvReceptionDefinitive": {
+        "nomFichier": "PV_Definitive_1676K.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "attestationReference": {
+        "nomFichier": "Attestation_Reference_1676K.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "suiviExecutionDetaille": {
+        "nomFichier": "Suivi_Execution_1676K.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "suiviReglementDetaille": {
+        "nomFichier": "Suivi_Reglement_1676K.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      }
+    }
+  },
+  {
+    "client": "OCP JORF",
+    "numeroProjet": "23113E/19",
+    "designation": "REMISE EN ETAT DU SYSTÈME DETECTION ET EXTINCTION AUTOMATIQUE DU CIRCUIT DECHRGEMENT VERS H3",
+    "typeProjet": "Protection incendie",
+    "responsableInterne": "HICHAM, RAJAA",
+    "responsableExterne": "MOUIH ACHRAF",
+    "dureeContractuelle": "6 Mois",
+    "dateDebut": "",
+    "dateFinEffective": "",
+    "avancement": "",
+    "statutExecution": "En cours",
+    "montantContratTTC": "",
+    "montantAvenant": "",
+    "montantCumul": "",
+    "montantEncaisse": "",
+    "soldeRestant": "",
+    "statutFacturation": "",
+    "remarques": "",
+    "piecesJointes": {
+      "contrat": {
+        "nomFichier": "Contrat_23113E/19.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "pvReceptionProvisoire": {
+        "nomFichier": "PV_Provisoire_23113E/19.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "pvReceptionDefinitive": {
+        "nomFichier": "PV_Definitive_23113E/19.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "attestationReference": {
+        "nomFichier": "Attestation_Reference_23113E/19.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "suiviExecutionDetaille": {
+        "nomFichier": "Suivi_Execution_23113E/19.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "suiviReglementDetaille": {
+        "nomFichier": "Suivi_Reglement_23113E/19.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      }
+    }
+  },
+  {
+    "client": "OCP JORF",
+    "numeroProjet": "AO_55883",
+    "designation": "Fourniture d'un système webex Room Kit pour vidéo conférence (voir fiche technique en annexe du DT",
+    "typeProjet": "Affichage",
+    "responsableInterne": "AZIZ, RAJAA",
+    "responsableExterne": "HAJAR AITNACEUR",
+    "dureeContractuelle": "",
+    "dateDebut": "",
+    "dateFinEffective": "",
+    "avancement": "",
+    "statutExecution": "Terminé",
+    "montantContratTTC": "",
+    "montantAvenant": "",
+    "montantCumul": "",
+    "montantEncaisse": "",
+    "soldeRestant": "",
+    "statutFacturation": "",
+    "remarques": "",
+    "piecesJointes": {
+      "contrat": {
+        "nomFichier": "Contrat_AO_55883.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "pvReceptionProvisoire": {
+        "nomFichier": "PV_Provisoire_AO_55883.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "pvReceptionDefinitive": {
+        "nomFichier": "PV_Definitive_AO_55883.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "attestationReference": {
+        "nomFichier": "Attestation_Reference_AO_55883.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "suiviExecutionDetaille": {
+        "nomFichier": "Suivi_Execution_AO_55883.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "suiviReglementDetaille": {
+        "nomFichier": "Suivi_Reglement_AO_55883.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      }
+    }
+  },
+  {
+    "client": "OCP BENGURIR",
+    "numeroProjet": "8548B/24",
+    "designation": "MAINTENANCE DU SYSTEME DE TELESURVEILLANCE ELECTRONIQUE",
+    "typeProjet": "Maintenance",
+    "responsableInterne": "AZIZ",
+    "responsableExterne": "GOUAHMANE MOHAMED",
+    "dureeContractuelle": "12 Mois",
+    "dateDebut": "12/16/2024",
+    "dateFinEffective": "",
+    "avancement": "20%",
+    "statutExecution": "En cours",
+    "montantContratTTC": "4,674,736.42",
+    "montantAvenant": "N/A",
+    "montantCumul": "100,000.00",
+    "montantEncaisse": "",
+    "soldeRestant": "",
+    "statutFacturation": "Non payé",
+    "remarques": "",
+    "piecesJointes": {
+      "contrat": {
+        "nomFichier": "Contrat_8548B/24.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "pvReceptionProvisoire": {
+        "nomFichier": "PV_Provisoire_8548B/24.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "pvReceptionDefinitive": {
+        "nomFichier": "PV_Definitive_8548B/24.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "attestationReference": {
+        "nomFichier": "Attestation_Reference_8548B/24.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "suiviExecutionDetaille": {
+        "nomFichier": "Suivi_Execution_8548B/24.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "suiviReglementDetaille": {
+        "nomFichier": "Suivi_Reglement_8548B/24.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      }
+    }
+  },
+  {
+    "client": "OCP KHOURIBGA",
+    "numeroProjet": "OCP KHOURIBGA",
+    "designation": "FOURNITURE ET INSTALLATION D'UN SYSTÈME DE VIDÉOSURVEILLANCE LAVERIE MEA",
+    "typeProjet": "Vidéosurveillance",
+    "responsableInterne": "AZIZ",
+    "responsableExterne": "",
+    "dureeContractuelle": "6 Mois",
+    "dateDebut": "4/22/2025",
+    "dateFinEffective": "",
+    "avancement": "20%",
+    "statutExecution": "En cours",
+    "montantContratTTC": "",
+    "montantAvenant": "",
+    "montantCumul": "",
+    "montantEncaisse": "",
+    "soldeRestant": "",
+    "statutFacturation": "",
+    "remarques": "",
+    "piecesJointes": {
+      "contrat": {
+        "nomFichier": "Contrat_OCP KHOURIBGA.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "pvReceptionProvisoire": {
+        "nomFichier": "PV_Provisoire_OCP KHOURIBGA.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "pvReceptionDefinitive": {
+        "nomFichier": "PV_Definitive_OCP KHOURIBGA.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "attestationReference": {
+        "nomFichier": "Attestation_Reference_OCP KHOURIBGA.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "suiviExecutionDetaille": {
+        "nomFichier": "Suivi_Execution_OCP KHOURIBGA.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "suiviReglementDetaille": {
+        "nomFichier": "Suivi_Reglement_OCP KHOURIBGA.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      }
+    }
+  },
+  {
+    "client": "OCP KHOURIBGA",
+    "numeroProjet": "46479",
+    "designation": "CONTROLE D'ACCES DAOUI",
+    "typeProjet": "Contrôle d'accès",
+    "responsableInterne": "AZIZ",
+    "responsableExterne": "",
+    "dureeContractuelle": "",
+    "dateDebut": "",
+    "dateFinEffective": "",
+    "avancement": "",
+    "statutExecution": "",
+    "montantContratTTC": "",
+    "montantAvenant": "",
+    "montantCumul": "",
+    "montantEncaisse": "",
+    "soldeRestant": "",
+    "statutFacturation": "",
+    "remarques": "",
+    "piecesJointes": {
+      "contrat": {
+        "nomFichier": "Contrat_46479.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "pvReceptionProvisoire": {
+        "nomFichier": "PV_Provisoire_46479.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "pvReceptionDefinitive": {
+        "nomFichier": "PV_Definitive_46479.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "attestationReference": {
+        "nomFichier": "Attestation_Reference_46479.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "suiviExecutionDetaille": {
+        "nomFichier": "Suivi_Execution_46479.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "suiviReglementDetaille": {
+        "nomFichier": "Suivi_Reglement_46479.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      }
+    }
+  },
+  {
+    "client": "OCP JORF",
+    "numeroProjet": "2430C/19",
+    "designation": "JFCV",
+    "typeProjet": "Protection incendie",
+    "responsableInterne": "HICHAM",
+    "responsableExterne": "",
+    "dureeContractuelle": "",
+    "dateDebut": "",
+    "dateFinEffective": "",
+    "avancement": "",
+    "statutExecution": "Terminé",
+    "montantContratTTC": "",
+    "montantAvenant": "",
+    "montantCumul": "",
+    "montantEncaisse": "",
+    "soldeRestant": "",
+    "statutFacturation": "",
+    "remarques": "",
+    "piecesJointes": {
+      "contrat": {
+        "nomFichier": "Contrat_2430C/19.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "pvReceptionProvisoire": {
+        "nomFichier": "PV_Provisoire_2430C/19.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "pvReceptionDefinitive": {
+        "nomFichier": "PV_Definitive_2430C/19.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "attestationReference": {
+        "nomFichier": "Attestation_Reference_2430C/19.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "suiviExecutionDetaille": {
+        "nomFichier": "Suivi_Execution_2430C/19.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "suiviReglementDetaille": {
+        "nomFichier": "Suivi_Reglement_2430C/19.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      }
+    }
+  },
+  {
+    "client": "OCP JORF",
+    "numeroProjet": "28629E/22",
+    "designation": "PANNEAUX D'AFFICHAGE",
+    "typeProjet": "Affichage",
+    "responsableInterne": "HICHAM, RAJAA",
+    "responsableExterne": "",
+    "dureeContractuelle": "",
+    "dateDebut": "",
+    "dateFinEffective": "",
+    "avancement": "",
+    "statutExecution": "Terminé",
+    "montantContratTTC": "",
+    "montantAvenant": "",
+    "montantCumul": "",
+    "montantEncaisse": "",
+    "soldeRestant": "",
+    "statutFacturation": "",
+    "remarques": "",
+    "piecesJointes": {
+      "contrat": {
+        "nomFichier": "Contrat_28629E/22.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "pvReceptionProvisoire": {
+        "nomFichier": "PV_Provisoire_28629E/22.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "pvReceptionDefinitive": {
+        "nomFichier": "PV_Definitive_28629E/22.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "attestationReference": {
+        "nomFichier": "Attestation_Reference_28629E/22.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "suiviExecutionDetaille": {
+        "nomFichier": "Suivi_Execution_28629E/22.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "suiviReglementDetaille": {
+        "nomFichier": "Suivi_Reglement_28629E/22.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      }
+    }
+  },
+  {
+    "client": "OCP JORF",
+    "numeroProjet": "AO_60872",
+    "designation": "Acquisition et mise en service des écrans avec leurs supports",
+    "typeProjet": "Affichage",
+    "responsableInterne": "IMANE, AZIZ",
+    "responsableExterne": "ABDESSAMAD DRIOUICH",
+    "dureeContractuelle": "2 Mois",
+    "dateDebut": "6/4/2025",
+    "dateFinEffective": "",
+    "avancement": "20%",
+    "statutExecution": "En cours",
+    "montantContratTTC": "107,280.60",
+    "montantAvenant": "",
+    "montantCumul": "",
+    "montantEncaisse": "",
+    "soldeRestant": "",
+    "statutFacturation": "",
+    "remarques": "2 articles adjugés : structure de fixation murale pour écran LED, contrôleur de gestion pour écran LED",
+    "piecesJointes": {
+      "contrat": {
+        "nomFichier": "Contrat_AO_60872.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "pvReceptionProvisoire": {
+        "nomFichier": "PV_Provisoire_AO_60872.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "pvReceptionDefinitive": {
+        "nomFichier": "PV_Definitive_AO_60872.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "attestationReference": {
+        "nomFichier": "Attestation_Reference_AO_60872.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "suiviExecutionDetaille": {
+        "nomFichier": "Suivi_Execution_AO_60872.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      },
+      "suiviReglementDetaille": {
+        "nomFichier": "Suivi_Reglement_AO_60872.pdf",
+        "format": "PDF",
+        "statut": "Pièce jointe"
+      }
+    }
+  }
+]

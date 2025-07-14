@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Debug Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .debug-info { background: #f0f0f0; padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .error { background: #ffebee; color: #c62828; }
+        .success { background: #e8f5e8; color: #2e7d32; }
+    </style>
+</head>
+<body>
+    <h1>Test Debug Dashboard</h1>
+    
+    <div class="debug-info">
+        <h3>Test API Projets</h3>
+        <button onclick="testAPI()">Tester l'API</button>
+        <div id="apiResult"></div>
+    </div>
+    
+    <div class="debug-info">
+        <h3>Test Dashboard Page</h3>
+        <button onclick="testDashboard()">Tester Dashboard</button>
+        <div id="dashboardResult"></div>
+    </div>
+    
+    <div class="debug-info">
+        <h3>Test Direct</h3>
+        <a href="http://localhost:8080/dashboard" target="_blank">Ouvrir Dashboard</a>
+        <br>
+        <a href="http://localhost:8080/api/projets" target="_blank">Ouvrir API Projets</a>
+    </div>
+
+    <script>
+        async function testAPI() {
+            const resultDiv = document.getElementById('apiResult');
+            try {
+                const response = await fetch('http://localhost:8080/api/projets');
+                const data = await response.json();
+                resultDiv.innerHTML = `
+                    <div class="success">
+                        <strong>✓ API accessible</strong><br>
+                        Status: ${response.status}<br>
+                        Nombre de projets: ${data.length}<br>
+                        Premier projet: ${data[0] ? data[0].numeroProjet + ' - ' + data[0].client : 'Aucun'}
+                    </div>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="error">
+                        <strong>✗ Erreur API</strong><br>
+                        ${error.message}
+                    </div>
+                `;
+            }
+        }
+        
+        async function testDashboard() {
+            const resultDiv = document.getElementById('dashboardResult');
+            try {
+                const response = await fetch('http://localhost:8080/dashboard');
+                const html = await response.text();
+                
+                let result = `<div class="success">
+                    <strong>✓ Dashboard accessible</strong><br>
+                    Status: ${response.status}<br>
+                `;
+                
+                if (html.includes('selectedProjet')) {
+                    result += '✓ Template contient selectedProjet<br>';
+                } else {
+                    result += '✗ Template ne contient pas selectedProjet<br>';
+                }
+                
+                if (html.includes('section-info')) {
+                    result += '✓ Section info présente<br>';
+                } else {
+                    result += '✗ Section info manquante<br>';
+                }
+                
+                if (html.includes('display: none')) {
+                    result += '⚠ CSS cache les sections<br>';
+                }
+                
+                result += '</div>';
+                resultDiv.innerHTML = result;
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="error">
+                        <strong>✗ Erreur Dashboard</strong><br>
+                        ${error.message}
+                    </div>
+                `;
+            }
+        }
+    </script>
+</body>
+</html> 

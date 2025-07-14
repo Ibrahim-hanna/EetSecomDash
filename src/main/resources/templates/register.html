@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Inscription</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #1a3365 0%, #00b894 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        .register-container {
+            background: rgba(255,255,255,0.85);
+            border-radius: 24px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+            padding: 40px 32px 32px 32px;
+            width: 350px;
+            text-align: center;
+        }
+        .register-container img {
+            width: 170px;
+            margin-bottom: 16px;
+        }
+        .register-container h1 {
+            font-size: 2rem;
+            color: #1a3365;
+            margin-bottom: 24px;
+        }
+        .register-container input,
+        .register-container select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 16px;
+            border: 1px solid #cfd8dc;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: #f7fafc;
+        }
+        .register-container button {
+            width: 100%;
+            padding: 12px;
+            background: #00bfff;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 12px;
+            transition: background 0.2s;
+        }
+        .register-container button:hover {
+            background: #0099cc;
+        }
+        .register-container .login-link {
+            color: #1a3365;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .register-container .login-link:hover {
+            text-decoration: underline;
+        }
+        .register-container .error {
+            color: #c0392b;
+            margin-bottom: 10px;
+        }
+        .register-container .success {
+            color: #27ae60;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="register-container">
+    <img src="/images/edet_logo.png" alt="Logo" />
+    <h1>Inscription</h1>
+    <form method="post" action="/register" th:object="${registerRequest}">
+        <input type="text" th:field="*{username}" placeholder="Nom d'utilisateur" required>
+        <input type="email" th:field="*{email}" placeholder="Email" required>
+        <input type="password" th:field="*{password}" placeholder="Mot de passe" required>
+        <select th:field="*{role}" required>
+            <option value="">Choisir un rôle</option>
+            <option th:each="role : ${roles}" 
+                    th:value="${role}" 
+                    th:text="${role}">
+            </option>
+        </select>
+        <button type="submit">S'inscrire</button>
+    </form>
+    <div th:if="${error}" class="error" th:text="${error}"></div>
+    <div th:if="${success}" class="success" th:text="${success}"></div>
+    <p>Déjà un compte ?<br>
+        <a class="login-link" href="/login">Connectez-vous ici</a>
+    </p>
+</div>
+</body>
+</html> 
