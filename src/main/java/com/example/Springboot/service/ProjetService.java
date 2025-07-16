@@ -40,11 +40,19 @@ public class ProjetService {
     }
 
     public Projet saveProjet(Projet projet) {
-        Projet saved = projetRepository.save(projet);
-        if (messagingTemplate != null) {
-            messagingTemplate.convertAndSend("/topic/projets", toDTO(saved));
+        System.out.println(">>> [ProjetService] Sauvegarde du projet: " + projet.getNumeroProjet());
+        try {
+            Projet saved = projetRepository.save(projet);
+            System.out.println(">>> [ProjetService] Projet sauvegardé avec succès, ID: " + saved.getId());
+            if (messagingTemplate != null) {
+                messagingTemplate.convertAndSend("/topic/projets", toDTO(saved));
+            }
+            return saved;
+        } catch (Exception e) {
+            System.err.println(">>> [ProjetService] Erreur lors de la sauvegarde du projet: " + e.getMessage());
+            e.printStackTrace();
+            throw e;
         }
-        return saved;
     }
 
     public void deleteProjet(Long id) {
@@ -89,40 +97,114 @@ public class ProjetService {
         dto.setMontantCumul(projet.getMontantCumul());
         dto.setMontantEncaisse(projet.getMontantEncaisse());
         dto.setSoldeRestant(projet.getSoldeRestant());
+        dto.setSolde(projet.getSolde());
         dto.setStatutFacturation(projet.getStatutFacturation());
         dto.setRemarques(projet.getRemarques());
+        
+        // Nouveaux champs pour le suivi d'exécution détaillé
+        dto.setPhase(projet.getPhase());
+        dto.setZone(projet.getZone());
+        dto.setQuantiteInstallee(projet.getQuantiteInstallee());
+        dto.setRemarquesExecution(projet.getRemarquesExecution());
+        
+        // Nouveaux champs pour le suivi règlement détaillé
+        dto.setNAttachment(projet.getNAttachment());
+        dto.setDateAttachement(projet.getDateAttachement());
+        dto.setDateFacture(projet.getDateFacture());
+        dto.setDatePaiement(projet.getDatePaiement());
+        dto.setModeReglement(projet.getModeReglement());
+        dto.setRemarqueReglement(projet.getRemarqueReglement());
+        
         // Pièces jointes individuelles
         if (dto.getPiecesJointes() == null) dto.setPiecesJointes(new ProjetDTO.PiecesJointes());
-        if (projet.getPvReceptionProvisoire() != null && pieceJointeExiste(projet.getPvReceptionProvisoire())) {
-            ProjetDTO.PieceJointe pj = new ProjetDTO.PieceJointe();
-            pj.nomFichier = projet.getPvReceptionProvisoire();
-            dto.getPiecesJointes().pvReceptionProvisoire = pj;
+        
+        // Log de débogage pour les pièces jointes
+        System.out.println("DEBUG - toDTO pour projet " + projet.getNumeroProjet() + " (ID: " + projet.getId() + ")");
+        
+        // Contrat
+        if (projet.getContratPieceJointe() != null) {
+            System.out.println("DEBUG - Contrat en base: " + projet.getContratPieceJointe());
+            if (pieceJointeExiste(projet.getContratPieceJointe())) {
+                ProjetDTO.PieceJointe pj = new ProjetDTO.PieceJointe();
+                pj.nomFichier = projet.getContratPieceJointe();
+                pj.description = projet.getContratPieceJointeDescription(); // <-- à adapter selon le nom réel du getter
+                dto.getPiecesJointes().contrat = pj;
+                System.out.println("DEBUG - Contrat ajouté au DTO");
+            } else {
+                System.out.println("DEBUG - Contrat non trouvé physiquement: " + projet.getContratPieceJointe());
+            }
         }
-        if (projet.getPvReceptionDefinitif() != null && pieceJointeExiste(projet.getPvReceptionDefinitif())) {
-            ProjetDTO.PieceJointe pj = new ProjetDTO.PieceJointe();
-            pj.nomFichier = projet.getPvReceptionDefinitif();
-            dto.getPiecesJointes().pvReceptionDefinitive = pj;
+        
+        // PV Réception Provisoire
+        if (projet.getPvReceptionProvisoire() != null) {
+            System.out.println("DEBUG - PV Provisoire en base: " + projet.getPvReceptionProvisoire());
+            if (pieceJointeExiste(projet.getPvReceptionProvisoire())) {
+                ProjetDTO.PieceJointe pj = new ProjetDTO.PieceJointe();
+                pj.nomFichier = projet.getPvReceptionProvisoire();
+                pj.description = projet.getPvReceptionProvisoireDescription(); // <-- à adapter selon le nom réel du getter
+                dto.getPiecesJointes().pvReceptionProvisoire = pj;
+                System.out.println("DEBUG - PV Provisoire ajouté au DTO");
+            } else {
+                System.out.println("DEBUG - PV Provisoire non trouvé physiquement: " + projet.getPvReceptionProvisoire());
+            }
         }
-        if (projet.getAttestationReference() != null && pieceJointeExiste(projet.getAttestationReference())) {
-            ProjetDTO.PieceJointe pj = new ProjetDTO.PieceJointe();
-            pj.nomFichier = projet.getAttestationReference();
-            dto.getPiecesJointes().attestationReference = pj;
+        
+        // PV Réception Définitive
+        if (projet.getPvReceptionDefinitif() != null) {
+            System.out.println("DEBUG - PV Definitif en base: " + projet.getPvReceptionDefinitif());
+            if (pieceJointeExiste(projet.getPvReceptionDefinitif())) {
+                ProjetDTO.PieceJointe pj = new ProjetDTO.PieceJointe();
+                pj.nomFichier = projet.getPvReceptionDefinitif();
+                pj.description = projet.getPvReceptionDefinitifDescription(); // <-- à adapter selon le nom réel du getter
+                dto.getPiecesJointes().pvReceptionDefinitive = pj;
+                System.out.println("DEBUG - PV Definitif ajouté au DTO");
+            } else {
+                System.out.println("DEBUG - PV Definitif non trouvé physiquement: " + projet.getPvReceptionDefinitif());
+            }
         }
-        if (projet.getContratPieceJointe() != null && pieceJointeExiste(projet.getContratPieceJointe())) {
-            ProjetDTO.PieceJointe pj = new ProjetDTO.PieceJointe();
-            pj.nomFichier = projet.getContratPieceJointe();
-            dto.getPiecesJointes().contrat = pj;
+        
+        // Attestation de référence
+        if (projet.getAttestationReference() != null) {
+            System.out.println("DEBUG - Attestation en base: " + projet.getAttestationReference());
+            if (pieceJointeExiste(projet.getAttestationReference())) {
+                ProjetDTO.PieceJointe pj = new ProjetDTO.PieceJointe();
+                pj.nomFichier = projet.getAttestationReference();
+                pj.description = projet.getAttestationReferenceDescription(); // <-- à adapter selon le nom réel du getter
+                dto.getPiecesJointes().attestationReference = pj;
+                System.out.println("DEBUG - Attestation ajoutée au DTO");
+            } else {
+                System.out.println("DEBUG - Attestation non trouvée physiquement: " + projet.getAttestationReference());
+            }
         }
-        if (projet.getSuiviExecutionDetaillePieceJointe() != null && pieceJointeExiste(projet.getSuiviExecutionDetaillePieceJointe())) {
-            ProjetDTO.PieceJointe pj = new ProjetDTO.PieceJointe();
-            pj.nomFichier = projet.getSuiviExecutionDetaillePieceJointe();
-            dto.getPiecesJointes().suiviExecutionDetaille = pj;
+        
+        // Suivi exécution détaillé
+        if (projet.getSuiviExecutionDetaillePieceJointe() != null) {
+            System.out.println("DEBUG - Suivi execution en base: " + projet.getSuiviExecutionDetaillePieceJointe());
+            if (pieceJointeExiste(projet.getSuiviExecutionDetaillePieceJointe())) {
+                ProjetDTO.PieceJointe pj = new ProjetDTO.PieceJointe();
+                pj.nomFichier = projet.getSuiviExecutionDetaillePieceJointe();
+                pj.description = projet.getSuiviExecutionDetaillePieceJointeDescription(); // <-- à adapter selon le nom réel du getter
+                dto.getPiecesJointes().suiviExecutionDetaille = pj;
+                System.out.println("DEBUG - Suivi execution ajouté au DTO");
+            } else {
+                System.out.println("DEBUG - Suivi execution non trouvé physiquement: " + projet.getSuiviExecutionDetaillePieceJointe());
+            }
         }
-        if (projet.getSuiviReglementDetaillePieceJointe() != null && pieceJointeExiste(projet.getSuiviReglementDetaillePieceJointe())) {
-            ProjetDTO.PieceJointe pj = new ProjetDTO.PieceJointe();
-            pj.nomFichier = projet.getSuiviReglementDetaillePieceJointe();
-            dto.getPiecesJointes().suiviReglementDetaille = pj;
+        
+        // Suivi règlement détaillé
+        if (projet.getSuiviReglementDetaillePieceJointe() != null) {
+            System.out.println("DEBUG - Suivi reglement en base: " + projet.getSuiviReglementDetaillePieceJointe());
+            if (pieceJointeExiste(projet.getSuiviReglementDetaillePieceJointe())) {
+                ProjetDTO.PieceJointe pj = new ProjetDTO.PieceJointe();
+                pj.nomFichier = projet.getSuiviReglementDetaillePieceJointe();
+                pj.description = projet.getSuiviReglementDetaillePieceJointeDescription(); // <-- à adapter selon le nom réel du getter
+                dto.getPiecesJointes().suiviReglementDetaille = pj;
+                System.out.println("DEBUG - Suivi reglement ajouté au DTO");
+            } else {
+                System.out.println("DEBUG - Suivi reglement non trouvé physiquement: " + projet.getSuiviReglementDetaillePieceJointe());
+            }
         }
+        
         return dto;
     }
 
@@ -157,19 +239,35 @@ public class ProjetService {
             projet.setDureeContractuelle(dto.getDureeContractuelle().trim());
         }
         
-        DateTimeFormatter jsonFormatter = DateTimeFormatter.ofPattern("M/d/yyyy");
+        // Support pour les formats de date HTML (yyyy-MM-dd) et JSON (M/d/yyyy)
         if (dto.getDateDebut() != null && !dto.getDateDebut().isEmpty()) {
             try {
-                projet.setDateDebut(java.time.LocalDate.parse(dto.getDateDebut(), jsonFormatter));
-            } catch (Exception e) {
-                // format non conforme, on ignore
+                // Essayer d'abord le format HTML
+                projet.setDateDebut(java.time.LocalDate.parse(dto.getDateDebut()));
+            } catch (Exception e1) {
+                try {
+                    // Essayer le format JSON
+                    DateTimeFormatter jsonFormatter = DateTimeFormatter.ofPattern("M/d/yyyy");
+                    projet.setDateDebut(java.time.LocalDate.parse(dto.getDateDebut(), jsonFormatter));
+                } catch (Exception e2) {
+                    // format non conforme, on ignore
+                    System.out.println("DEBUG - Format de date non reconnu pour dateDebut: " + dto.getDateDebut());
+                }
             }
         }
         if (dto.getDateFinEffective() != null && !dto.getDateFinEffective().isEmpty()) {
             try {
-                projet.setDateFinEffective(java.time.LocalDate.parse(dto.getDateFinEffective(), jsonFormatter));
-            } catch (Exception e) {
-                // format non conforme, on ignore
+                // Essayer d'abord le format HTML
+                projet.setDateFinEffective(java.time.LocalDate.parse(dto.getDateFinEffective()));
+            } catch (Exception e1) {
+                try {
+                    // Essayer le format JSON
+                    DateTimeFormatter jsonFormatter = DateTimeFormatter.ofPattern("M/d/yyyy");
+                    projet.setDateFinEffective(java.time.LocalDate.parse(dto.getDateFinEffective(), jsonFormatter));
+                } catch (Exception e2) {
+                    // format non conforme, on ignore
+                    System.out.println("DEBUG - Format de date non reconnu pour dateFinEffective: " + dto.getDateFinEffective());
+                }
             }
         }
         
@@ -194,11 +292,52 @@ public class ProjetService {
         if (dto.getSoldeRestant() != null && !dto.getSoldeRestant().trim().isEmpty()) {
             projet.setSoldeRestant(dto.getSoldeRestant().trim());
         }
+        if (dto.getSolde() != null && !dto.getSolde().trim().isEmpty()) {
+            projet.setSolde(dto.getSolde().trim());
+        }
         if (dto.getStatutFacturation() != null && !dto.getStatutFacturation().trim().isEmpty()) {
             projet.setStatutFacturation(dto.getStatutFacturation().trim());
         }
         if (dto.getRemarques() != null && !dto.getRemarques().trim().isEmpty()) {
             projet.setRemarques(dto.getRemarques().trim());
+        }
+        
+        // Nouveaux champs pour le suivi d'exécution détaillé
+        if (dto.getPhase() != null && !dto.getPhase().trim().isEmpty()) {
+            System.out.println("[DEBUG] Mise à jour phase: " + dto.getPhase());
+            projet.setPhase(dto.getPhase().trim());
+        }
+        if (dto.getZone() != null && !dto.getZone().trim().isEmpty()) {
+            System.out.println("[DEBUG] Mise à jour zone: " + dto.getZone());
+            projet.setZone(dto.getZone().trim());
+        }
+        if (dto.getQuantiteInstallee() != null && !dto.getQuantiteInstallee().trim().isEmpty()) {
+            System.out.println("[DEBUG] Mise à jour quantité installée: " + dto.getQuantiteInstallee());
+            projet.setQuantiteInstallee(dto.getQuantiteInstallee().trim());
+        }
+        if (dto.getRemarquesExecution() != null && !dto.getRemarquesExecution().trim().isEmpty()) {
+            System.out.println("[DEBUG] Mise à jour remarques exécution: " + dto.getRemarquesExecution());
+            projet.setRemarquesExecution(dto.getRemarquesExecution().trim());
+        }
+        
+        // Nouveaux champs pour le suivi règlement détaillé
+        if (dto.getNAttachment() != null && !dto.getNAttachment().trim().isEmpty()) {
+            projet.setNAttachment(dto.getNAttachment().trim());
+        }
+        if (dto.getDateAttachement() != null && !dto.getDateAttachement().trim().isEmpty()) {
+            projet.setDateAttachement(dto.getDateAttachement().trim());
+        }
+        if (dto.getDateFacture() != null && !dto.getDateFacture().trim().isEmpty()) {
+            projet.setDateFacture(dto.getDateFacture().trim());
+        }
+        if (dto.getDatePaiement() != null && !dto.getDatePaiement().trim().isEmpty()) {
+            projet.setDatePaiement(dto.getDatePaiement().trim());
+        }
+        if (dto.getModeReglement() != null && !dto.getModeReglement().trim().isEmpty()) {
+            projet.setModeReglement(dto.getModeReglement().trim());
+        }
+        if (dto.getRemarqueReglement() != null && !dto.getRemarqueReglement().trim().isEmpty()) {
+            projet.setRemarqueReglement(dto.getRemarqueReglement().trim());
         }
         
         // Mapping des pièces jointes depuis le DTO
@@ -252,26 +391,32 @@ public class ProjetService {
             switch (type) {
                 case "contrat":
                     projet.setContratPieceJointe(filename);
+                    projet.setContratPieceJointeDescription(description);
                     System.out.println("DEBUG - Service: Contrat mis à jour avec filename=" + filename);
                     break;
                 case "pvReceptionProvisoire":
                     projet.setPvReceptionProvisoire(filename);
+                    projet.setPvReceptionProvisoireDescription(description);
                     System.out.println("DEBUG - Service: PV Provisoire mis à jour avec filename=" + filename);
                     break;
                 case "pvReceptionDefinitif":
                     projet.setPvReceptionDefinitif(filename);
+                    projet.setPvReceptionDefinitifDescription(description);
                     System.out.println("DEBUG - Service: PV Definitif mis à jour avec filename=" + filename);
                     break;
                 case "attestationReference":
                     projet.setAttestationReference(filename);
+                    projet.setAttestationReferenceDescription(description);
                     System.out.println("DEBUG - Service: Attestation mise à jour avec filename=" + filename);
                     break;
                 case "suivi_execution_detaille":
                     projet.setSuiviExecutionDetaillePieceJointe(filename);
+                    projet.setSuiviExecutionDetaillePieceJointeDescription(description);
                     System.out.println("DEBUG - Service: Suivi execution mis à jour avec filename=" + filename);
                     break;
                 case "suivi_reglement_detaille":
                     projet.setSuiviReglementDetaillePieceJointe(filename);
+                    projet.setSuiviReglementDetaillePieceJointeDescription(description);
                     System.out.println("DEBUG - Service: Suivi reglement mis à jour avec filename=" + filename);
                     break;
                 default:

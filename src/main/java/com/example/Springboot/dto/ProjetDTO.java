@@ -36,10 +36,37 @@ public class ProjetDTO {
     private String montantEncaisse;
     @JsonProperty("soldeRestant")
     private String soldeRestant;
+    @JsonProperty("solde")
+    private String solde;
     @JsonProperty("statutFacturation")
     private String statutFacturation;
     @JsonProperty("remarques")
     private String remarques;
+    
+    // Nouveaux champs pour le suivi d'exécution détaillé
+    @JsonProperty("phase")
+    private String phase;
+    @JsonProperty("zone")
+    private String zone;
+    @JsonProperty("quantiteInstallee")
+    private String quantiteInstallee;
+    @JsonProperty("remarquesExecution")
+    private String remarquesExecution;
+    
+    // Nouveaux champs pour le suivi règlement détaillé
+    @JsonProperty("nAttachment")
+    private String nAttachment;
+    @JsonProperty("dateAttachement")
+    private String dateAttachement;
+    @JsonProperty("dateFacture")
+    private String dateFacture;
+    @JsonProperty("datePaiement")
+    private String datePaiement;
+    @JsonProperty("modeReglement")
+    private String modeReglement;
+    @JsonProperty("remarqueReglement")
+    private String remarqueReglement;
+    
     @JsonProperty("piecesJointes")
     private PiecesJointes piecesJointes;
 
@@ -64,6 +91,8 @@ public class ProjetDTO {
         public String format;
         @JsonProperty("statut")
         public String statut;
+        @JsonProperty("description")
+        public String description;
     }
 
     // Getters & Setters
@@ -101,10 +130,36 @@ public class ProjetDTO {
     public void setMontantEncaisse(String montantEncaisse) { this.montantEncaisse = montantEncaisse; }
     public String getSoldeRestant() { return soldeRestant; }
     public void setSoldeRestant(String soldeRestant) { this.soldeRestant = soldeRestant; }
+    public String getSolde() { return solde; }
+    public void setSolde(String solde) { this.solde = solde; }
     public String getStatutFacturation() { return statutFacturation; }
     public void setStatutFacturation(String statutFacturation) { this.statutFacturation = statutFacturation; }
     public String getRemarques() { return remarques; }
     public void setRemarques(String remarques) { this.remarques = remarques; }
+    
+    // Getters et Setters pour les nouveaux champs
+    public String getPhase() { return phase; }
+    public void setPhase(String phase) { this.phase = phase; }
+    public String getZone() { return zone; }
+    public void setZone(String zone) { this.zone = zone; }
+    public String getQuantiteInstallee() { return quantiteInstallee; }
+    public void setQuantiteInstallee(String quantiteInstallee) { this.quantiteInstallee = quantiteInstallee; }
+    public String getRemarquesExecution() { return remarquesExecution; }
+    public void setRemarquesExecution(String remarquesExecution) { this.remarquesExecution = remarquesExecution; }
+    
+    // Getters et Setters pour les nouveaux champs de suivi règlement détaillé
+    public String getNAttachment() { return nAttachment; }
+    public void setNAttachment(String nAttachment) { this.nAttachment = nAttachment; }
+    public String getDateAttachement() { return dateAttachement; }
+    public void setDateAttachement(String dateAttachement) { this.dateAttachement = dateAttachement; }
+    public String getDateFacture() { return dateFacture; }
+    public void setDateFacture(String dateFacture) { this.dateFacture = dateFacture; }
+    public String getDatePaiement() { return datePaiement; }
+    public void setDatePaiement(String datePaiement) { this.datePaiement = datePaiement; }
+    public String getModeReglement() { return modeReglement; }
+    public void setModeReglement(String modeReglement) { this.modeReglement = modeReglement; }
+    public String getRemarqueReglement() { return remarqueReglement; }
+    public void setRemarqueReglement(String remarqueReglement) { this.remarqueReglement = remarqueReglement; }
     public PiecesJointes getPiecesJointes() { return piecesJointes; }
     public void setPiecesJointes(PiecesJointes piecesJointes) { this.piecesJointes = piecesJointes; }
     // Getters pour les pièces jointes individuelles

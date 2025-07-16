@@ -16,12 +16,22 @@ public class ProjetDataInitializer {
 
     @PostConstruct
     public void importJsonToH2() {
-        // Vider la table avant import
-        projetService.deleteAllProjets();
+        // Vérifier si la base de données est vide
+        List<Projet> projetsExistants = projetService.getAllProjets();
+        
+        if (!projetsExistants.isEmpty()) {
+            System.out.println("[INIT] Base de données non vide (" + projetsExistants.size() + " projets). Aucun import depuis JSON.");
+            return;
+        }
+        
+        System.out.println("[INIT] Base de données vide. Import initial depuis JSON...");
+        
         List<ProjetDTO> projets = projetService.loadProjetsFromJson();
+        System.out.println("[INIT] Nombre de projets dans le JSON: " + projets.size());
+        
         int imported = 0;
         for (ProjetDTO dto : projets) {
-            if (dto.getNumeroProjet() != null && projetService.getProjetByNumero(dto.getNumeroProjet()).isEmpty()) {
+            if (dto.getNumeroProjet() != null) {
                 Projet saved = projetService.saveProjet(projetService.toEntity(dto));
                 System.out.println("[INIT] Projet importé: " + saved.getNumeroProjet() + " (ID: " + saved.getId() + ")");
                 imported++;

@@ -180,6 +180,52 @@
             padding-left: 0 !important;
             margin-left: 0 !important;
         }
+        
+        /* Styles pour le tableau de bord global */
+        .card.bg-primary, .card.bg-success, .card.bg-info, .card.bg-warning, .card.bg-danger, .card.bg-secondary {
+            transition: transform 0.2s ease-in-out;
+        }
+        
+        .card.bg-primary:hover, .card.bg-success:hover, .card.bg-info:hover, .card.bg-warning:hover, .card.bg-danger:hover, .card.bg-secondary:hover {
+            transform: translateY(-5px);
+        }
+        
+        .table-responsive {
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .progress {
+            border-radius: 10px;
+        }
+        
+        .progress-bar {
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        /* Styles pour le tableau avec plus de colonnes */
+        .table-responsive {
+            font-size: 0.9rem;
+        }
+        
+        .table th {
+            font-size: 0.85rem;
+            white-space: nowrap;
+        }
+        
+        .table td {
+            vertical-align: middle;
+            max-width: 150px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .table td:hover {
+            white-space: normal;
+            word-wrap: break-word;
+        }
     </style>
 </head>
 <body>
@@ -239,76 +285,7 @@
     <!-- Suivi détaillé dynamique -->
     <div id="section-detail" class="section"></div>
     <!-- Réception (Pièces jointes) -->
-    <div id="section-reception" class="section">
-        <div class="section-title d-flex justify-content-between align-items-center">
-            <span><i class="bi bi-file-earmark-arrow-down"></i> Réception (Pièces jointes)</span>
-            <button type="button" class="btn btn-primary btn-sm" id="btnAddPieceJointe" style="display: none;">
-                <i class="bi bi-plus-circle"></i> Ajouter une pièce jointe
-            </button>
-        </div>
-        <ul class="list-group mb-4">
-                            <li class="list-group-item"><i class="bi bi-file-earmark-text"></i> Contrat :
-  <span th:if="${selectedProjet?.piecesJointes?.contrat?.nomFichier}">
-    <span th:if="${#strings.endsWith(selectedProjet.piecesJointes.contrat.nomFichier, '.pdf')}">
-      <a th:href="@{'/api/pieces-jointes/preview/' + ${selectedProjet.piecesJointes.contrat.nomFichier}}" target="_blank">
-        <img th:src="@{'/api/pieces-jointes/preview/' + ${selectedProjet.piecesJointes.contrat.nomFichier}}" style="max-width:100px;max-height:100px;"/>
-        <span th:text="${selectedProjet.piecesJointes.contrat.nomFichier}" style="margin-left:8px;"></span>
-      </a>
-    </span>
-    <span th:unless="${#strings.endsWith(selectedProjet.piecesJointes.contrat.nomFichier, '.pdf')}">
-      <a th:href="@{'/api/pieces-jointes/files/' + ${selectedProjet.piecesJointes.contrat.nomFichier}}" target="_blank">
-        <img th:src="@{'/api/pieces-jointes/files/' + ${selectedProjet.piecesJointes.contrat.nomFichier}}" style="max-width:100px;max-height:100px;"/>
-        <span th:text="${selectedProjet.piecesJointes.contrat.nomFichier}" style="margin-left:8px;"></span>
-      </a>
-    </span>
-    <div class="mt-2" th:if="${userRole != 'EMPLOYE'}">
-      <button type="button" class="btn btn-sm btn-outline-primary me-1" onclick="modifierPieceJointe('contrat')">✏️ Modifier</button>
-      <button type="button" class="btn btn-sm btn-outline-danger" onclick="supprimerPieceJointe('contrat')">❌ Supprimer</button>
-    </div>
-  </span>
-  <span th:unless="${selectedProjet?.piecesJointes?.contrat?.nomFichier}" class="text-muted">Aucun fichier</span>
-</li>
-            <li class="list-group-item"><i class="bi bi-file-earmark-check"></i> PV de réception provisoire :
-  <span th:if="${selectedProjet?.piecesJointes?.pvReceptionProvisoire?.nomFichier}">
-    <a th:href="@{'/api/pieces-jointes/preview/' + ${selectedProjet.piecesJointes.pvReceptionProvisoire.nomFichier}}" target="_blank">
-      <img th:src="@{'/api/pieces-jointes/preview/' + ${selectedProjet.piecesJointes.pvReceptionProvisoire.nomFichier}}" style="max-width:100px;max-height:100px;"/>
-      <span th:text="${selectedProjet.piecesJointes.pvReceptionProvisoire.nomFichier}" style="margin-left:8px;"></span>
-    </a>
-    <div class="mt-2" th:if="${userRole != 'EMPLOYE'}">
-      <button type="button" class="btn btn-sm btn-outline-primary me-1" onclick="modifierPieceJointe('pvReceptionProvisoire')">✏️ Modifier</button>
-      <button type="button" class="btn btn-sm btn-outline-danger" onclick="supprimerPieceJointe('pvReceptionProvisoire')">❌ Supprimer</button>
-    </div>
-  </span>
-  <span th:unless="${selectedProjet?.piecesJointes?.pvReceptionProvisoire?.nomFichier}" class="text-muted">Aucun fichier</span>
-</li>
-            <li class="list-group-item"><i class="bi bi-file-earmark-check-fill"></i> PV de réception définitif :
-  <span th:if="${selectedProjet?.piecesJointes?.pvReceptionDefinitive?.nomFichier}">
-    <a th:href="@{'/api/pieces-jointes/preview/' + ${selectedProjet.piecesJointes.pvReceptionDefinitive.nomFichier}}" target="_blank">
-      <img th:src="@{'/api/pieces-jointes/preview/' + ${selectedProjet.piecesJointes.pvReceptionDefinitive.nomFichier}}" style="max-width:100px;max-height:100px;"/>
-      <span th:text="${selectedProjet.piecesJointes.pvReceptionDefinitive.nomFichier}" style="margin-left:8px;"></span>
-    </a>
-    <div class="mt-2" th:if="${userRole != 'EMPLOYE'}">
-      <button type="button" class="btn btn-sm btn-outline-primary me-1" onclick="modifierPieceJointe('pvReceptionDefinitive')">✏️ Modifier</button>
-      <button type="button" class="btn btn-sm btn-outline-danger" onclick="supprimerPieceJointe('pvReceptionDefinitive')">❌ Supprimer</button>
-    </div>
-  </span>
-  <span th:unless="${selectedProjet?.piecesJointes?.pvReceptionDefinitive?.nomFichier}" class="text-muted">Aucun fichier</span>
-</li>
-            <li class="list-group-item"><i class="bi bi-award"></i> Attestation de référence :
-  <span th:if="${selectedProjet?.piecesJointes?.attestationReference?.nomFichier}">
-    <a th:href="@{'/api/pieces-jointes/preview/' + ${selectedProjet.piecesJointes.attestationReference.nomFichier}}" target="_blank">
-      <img th:src="@{'/api/pieces-jointes/preview/' + ${selectedProjet.piecesJointes.attestationReference.nomFichier}}" style="max-width:100px;max-height:100px;"/>
-      <span th:text="${selectedProjet.piecesJointes.attestationReference.nomFichier}" style="margin-left:8px;"></span>
-    </a>
-    <div class="mt-2" th:if="${userRole != 'EMPLOYE'}">
-      <button type="button" class="btn btn-sm btn-outline-primary me-1" onclick="modifierPieceJointe('attestationReference')">✏️ Modifier</button>
-      <button type="button" class="btn btn-sm btn-outline-danger" onclick="supprimerPieceJointe('attestationReference')">❌ Supprimer</button>
-    </div>
-  </span>
-  <span th:unless="${selectedProjet?.piecesJointes?.attestationReference?.nomFichier}" class="text-muted">Aucun fichier</span>
-</li>
-        </ul>
-    </div>
+    <div id="section-reception" class="section"></div>
     <!-- Synthèse dynamique -->
     <div id="section-synthese" class="section"></div>
 </div>
@@ -328,7 +305,6 @@
             <label for="typePieceJointe" class="form-label">Type de pièce jointe</label>
             <select class="form-select" id="typePieceJointe">
               <option value="">Sélectionner un type</option>
-              <option value="contrat">Contrat</option>
               <option value="pvReceptionProvisoire">PV de réception provisoire</option>
               <option value="pvReceptionDefinitif">PV de réception définitif</option>
               <option value="attestationReference">Attestation de référence</option>
@@ -472,6 +448,83 @@
               </div>
             </div>
           </div>
+          
+          <!-- Nouvelle section pour le suivi d'exécution détaillé -->
+          <div class="row mt-4">
+            <div class="col-12">
+              <h6 class="text-primary mb-3"><i class="bi bi-graph-up"></i> Suivi d'exécution détaillé</h6>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="phase" class="form-label"><i class="bi bi-flag"></i> Phase</label>
+                <input type="text" class="form-control" id="phase" placeholder="Ex: Phase 1, Phase 2, etc.">
+              </div>
+              <div class="mb-3">
+                <label for="zone" class="form-label"><i class="bi bi-geo-alt"></i> Zone</label>
+                <input type="text" class="form-control" id="zone" placeholder="Zone d'intervention">
+              </div>
+              <div class="mb-3">
+                <label for="quantiteInstallee" class="form-label"><i class="bi bi-boxes"></i> Quantité installée</label>
+                <input type="text" class="form-control" id="quantiteInstallee" placeholder="Ex: 50 détecteurs">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="remarquesExecution" class="form-label"><i class="bi bi-chat-text"></i> Remarques exécution</label>
+                <textarea class="form-control" id="remarquesExecution" rows="3" placeholder="Remarques sur l'exécution..."></textarea>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Nouvelle section pour le suivi règlement détaillé -->
+          <div class="row mt-4">
+            <div class="col-12">
+              <h6 class="text-primary mb-3"><i class="bi bi-cash-stack"></i> Suivi règlement détaillé</h6>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="nAttachment" class="form-label"><i class="bi bi-hash"></i> N° Attachment</label>
+                <input type="text" class="form-control" id="nAttachment" placeholder="Numéro d'attachment">
+              </div>
+              <div class="mb-3">
+                <label for="dateAttachement" class="form-label"><i class="bi bi-calendar-plus"></i> Date attachement</label>
+                <input type="date" class="form-control" id="dateAttachement">
+              </div>
+              <div class="mb-3">
+                <label for="dateFacture" class="form-label"><i class="bi bi-calendar-event"></i> Date facture</label>
+                <input type="date" class="form-control" id="dateFacture">
+              </div>
+              <div class="mb-3">
+                <label for="datePaiement" class="form-label"><i class="bi bi-calendar-check"></i> Date paiement</label>
+                <input type="date" class="form-control" id="datePaiement">
+              </div>
+              <div class="mb-3">
+                <label for="modeReglement" class="form-label"><i class="bi bi-credit-card"></i> Mode de règlement</label>
+                <select class="form-select" id="modeReglement">
+                  <option value="">Sélectionner un mode</option>
+                  <option value="Virement">Virement</option>
+                  <option value="Chèque">Chèque</option>
+                  <option value="Espèce">Espèce</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="solde" class="form-label"><i class="bi bi-calculator"></i> Solde</label>
+                <input type="number" class="form-control" id="solde" step="0.01" placeholder="Solde">
+              </div>
+              <div class="mb-3">
+                <label for="remarqueReglement" class="form-label"><i class="bi bi-chat-text"></i> Remarque règlement</label>
+                <textarea class="form-control" id="remarqueReglement" rows="3" placeholder="Remarques sur le règlement..."></textarea>
+              </div>
+            </div>
+          </div>
+            </div>
+          </div>
         </form>
       </div>
       <div class="modal-footer">
@@ -487,6 +540,39 @@
 <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
 <script th:inline="javascript">
 console.log('=== JS PRINCIPAL CHARGE ET EXECUTE ===');
+console.log('JS chargé !');
+console.log('DOM ready, initialisation des gestionnaires d\'événements...');
+function updateSynthese(projet) {
+    // Fonction pour mettre à jour la synthèse du projet
+    // Cette fonction peut être étendue selon les besoins
+    console.log('updateSynthese appelée avec:', projet);
+}
+
+// Fonction de validation du formulaire de projet
+function validateProjetForm() {
+    console.log('Validation du formulaire de projet...');
+    const numeroProjet = document.getElementById('numeroProjet').value;
+    const client = document.getElementById('client').value;
+    const designation = document.getElementById('designation').value;
+    
+    if (!numeroProjet || !numeroProjet.trim()) {
+        showAlert('Le numéro de projet est obligatoire', 'warning');
+        return false;
+    }
+    
+    if (!client || !client.trim()) {
+        showAlert('Le client est obligatoire', 'warning');
+        return false;
+    }
+    
+    if (!designation || !designation.trim()) {
+        showAlert('La désignation est obligatoire', 'warning');
+        return false;
+    }
+    
+    console.log('Validation OK');
+    return true;
+}
 const userRole = /*[[${userRole}]]*/ 'ADMIN';
 let projets = /*[[${projets}]]*/ [];
 console.log('projets:', projets);
@@ -549,13 +635,27 @@ function updateProjectInfo(projet) {
         infoSection.innerHTML = '<div class="alert alert-danger">Aucun projet sélectionné</div>';
         return;
     }
+    
+    // Bouton pour ADMIN/SUPERVISEUR
+    let btnAdd = '';
+    if (userRole === 'ADMIN' || userRole === 'SUPERVISEUR') {
+        btnAdd = `<button type="button" class="btn btn-primary btn-sm mb-3" id="btnAddPieceJointeInfo">
+            <i class="bi bi-plus-circle"></i> Ajouter un contrat
+        </button>`;
+    }
+    
     function val(label, icon, value) {
         return `<li class='list-group-item d-flex align-items-center'>
             <i class='bi ${icon} me-2 text-info'></i>
             <span class='fw-bold'>${label} :</span> <span class='ms-2 ${value ? "" : "text-secondary"}'>${value || "Non renseigné"}</span>
         </li>`;
     }
+    
     infoSection.innerHTML = `
+        <div class="section-title d-flex justify-content-between align-items-center">
+            <span><i class="bi bi-info-circle"></i> Informations du projet</span>
+            ${btnAdd}
+        </div>
         <div class="card card-synthese mb-4" style="max-width:900px;width:100%;">
             <div class="card-body">
                 <h3 class="card-title mb-4 text-primary"><i class="bi bi-info-circle"></i> Informations du projet</h3>
@@ -570,9 +670,60 @@ function updateProjectInfo(projet) {
                     ${val('Montant total TTC', 'bi-cash-coin', projet.montantContratTTC)}
                     ${val('Montant avenant', 'bi-plus-circle', projet.montantAvenant)}
                 </ul>
+                <hr>
+                <h6 class="card-title mb-3"><i class="bi bi-file-earmark-text"></i> Contrat</h6>
+                <div class="list-group list-group-flush">
+                    <div class="list-group-item">
+                        <i class="bi bi-paperclip"></i> Pièce jointe :
+                        ${(projet.piecesJointes && projet.piecesJointes.contrat && projet.piecesJointes.contrat.nomFichier)
+                          ? (() => {
+                              const obj = projet.piecesJointes.contrat;
+                              const nom = obj.nomFichier;
+                              const isPdf = nom && nom.toLowerCase().endsWith('.pdf');
+                              const url = isPdf
+                                ? `/api/pieces-jointes/preview/${nom}`
+                                : `/api/pieces-jointes/files/${nom}`;
+                              return `<a href="${url}" target="_blank">
+                                        <img src="${url}" style="max-width:100px;max-height:100px;"/>
+                                        <span style="margin-left:8px;">${nom}</span>
+                                        ${obj.description ? `<div class='text-muted small'>${obj.description}</div>` : ''}
+                                      </a>
+                                      <div class='mt-2' ${userRole === 'EMPLOYE' ? 'style=\"display: none;\"' : ''}>
+                                        <button type='button' class='btn btn-sm btn-outline-primary me-1' onclick=\"modifierPieceJointe('contrat')\">✏️ Modifier</button>
+                                        <button type='button' class='btn btn-sm btn-outline-danger' onclick=\"supprimerPieceJointe('contrat')\">❌ Supprimer</button>
+                                      </div>`;
+                            })()
+                          : '<span class="text-muted">Aucun fichier</span>'}
+                    </div>
+                </div>
             </div>
         </div>
     `;
+
+    // Gestion du clic sur le bouton (après injection)
+    setTimeout(() => {
+      const btn = document.getElementById('btnAddPieceJointeInfo');
+      if (btn && (userRole === 'ADMIN' || userRole === 'SUPERVISEUR')) {
+        btn.onclick = function() {
+          const projet = projets[selectedProjetIndex];
+          if (!projet || !projet.id) {
+            showAlert('Aucun projet sélectionné', 'danger');
+            return;
+          }
+          document.getElementById('pieceJointeProjetId').value = projet.id;
+          document.getElementById('pieceJointeForm').reset();
+          // Limite les options du select pour Informations projet
+          const select = document.getElementById('typePieceJointe');
+          select.innerHTML = `
+            <option value="">Sélectionner un type</option>
+            <option value="contrat">Contrat</option>
+          `;
+          const modal = new bootstrap.Modal(document.getElementById('pieceJointeModal'));
+          modal.show();
+          setTimeout(attachSavePieceJointeHandler, 0);
+        };
+      }
+    }, 0);
 }
 
 function updateSuiviExecution(projet) {
@@ -589,7 +740,7 @@ function updateSuiviExecution(projet) {
           <ul class="list-group list-group-flush">
             <li class="list-group-item"><b>Date début :</b> ${projet.dateDebut || 'Non défini'}</li>
             <li class="list-group-item"><b>Date fin effective :</b> ${projet.dateFinEffective || 'Non défini'}</li>
-            <li class="list-group-item"><b>% d'avancement :</b> ${projet.pourcentageAvancement || projet.avancement || '0%'}</li>
+            <li class="list-group-item"><b>% d'avancement :</b> ${projet.avancement || '0%'}</li>
             <li class="list-group-item"><b>Statut d'exécution :</b> ${projet.statutExecution || 'Non défini'}</li>
             <li class="list-group-item"><b>Montant cumulé :</b> ${projet.montantCumul || '0'}</li>
             <li class="list-group-item"><b>Montant encaissé :</b> ${projet.montantEncaisse || '0'}</li>
@@ -626,22 +777,39 @@ function updateSuiviDetaille(projet) {
             <h6><i class="bi bi-graph-up"></i> Suivi exécution détaillée</h6>
             <ul class="list-group list-group-flush">
               <li class="list-group-item d-flex justify-content-between">
-                <span>Progression générale</span>
-                <span class="badge bg-primary">${projet.avancement || '0%'}</span>
+                <span><i class="bi bi-flag"></i> Phase</span>
+                <span class="badge bg-primary">${projet.phase || 'Non définie'}</span>
               </li>
               <li class="list-group-item d-flex justify-content-between">
-                <span>Phase actuelle</span>
+                <span><i class="bi bi-check-circle"></i> État</span>
                 <span class="badge bg-info">${projet.statutExecution || 'Non défini'}</span>
               </li>
               <li class="list-group-item d-flex justify-content-between">
-                <span>Délai restant</span>
-                <span>${projet.dateFinEffective || 'Non défini'}</span>
+                <span><i class="bi bi-calendar-event"></i> Date de démarrage</span>
+                <span>${projet.dateDebut || 'Non définie'}</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between">
+                <span><i class="bi bi-geo-alt"></i> Zone</span>
+                <span>${projet.zone || 'Non définie'}</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between">
+                <span><i class="bi bi-boxes"></i> Quantité installée</span>
+                <span>${projet.quantiteInstallee || 'Non définie'}</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between">
+                <span><i class="bi bi-percent"></i> Avancement</span>
+                <span class="badge bg-success">${projet.avancement || '0%'}</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between">
+                <span><i class="bi bi-chat-text"></i> Remarques exécution</span>
+                <span>${projet.remarquesExecution || 'Aucune remarque'}</span>
               </li>
               <li class="list-group-item">
                 <i class="bi bi-paperclip"></i> Pièce jointe :
                 ${(projet.piecesJointes && projet.piecesJointes.suiviExecutionDetaille && projet.piecesJointes.suiviExecutionDetaille.nomFichier)
                   ? (() => {
-                      const nom = projet.piecesJointes.suiviExecutionDetaille.nomFichier;
+                      const obj = projet.piecesJointes.suiviExecutionDetaille;
+                      const nom = obj && obj.nomFichier ? obj.nomFichier : '';
                       const isPdf = nom && nom.toLowerCase().endsWith('.pdf');
                       const url = isPdf
                         ? `/api/pieces-jointes/preview/${nom}`
@@ -649,8 +817,9 @@ function updateSuiviDetaille(projet) {
                       return `<a href="${url}" target="_blank">
                                 <img src="${url}" style="max-width:100px;max-height:100px;"/>
                                 <span style="margin-left:8px;">${nom}</span>
+                                ${obj.description ? `<div class='text-muted small'>${obj.description}</div>` : ''}
                               </a>
-                              <div class='mt-2' ${userRole === 'EMPLOYE' ? 'style="display: none;"' : ''}>
+                              <div class='mt-2' ${userRole === 'EMPLOYE' ? 'style=\"display: none;\"' : ''}>
                                 <button type='button' class='btn btn-sm btn-outline-primary me-1' onclick=\"modifierPieceJointe('suivi_execution_detaille')\">✏️ Modifier</button>
                                 <button type='button' class='btn btn-sm btn-outline-danger' onclick=\"supprimerPieceJointe('suivi_execution_detaille')\">❌ Supprimer</button>
                               </div>`;
@@ -665,26 +834,51 @@ function updateSuiviDetaille(projet) {
             <h6><i class="bi bi-cash-stack"></i> Suivi règlement détaillé</h6>
             <ul class="list-group list-group-flush">
               <li class="list-group-item d-flex justify-content-between">
-                <span>Montant total</span>
-                <span class="text-primary">${projet.montantContratTTC || '0 €'}</span>
+                <span><i class="bi bi-hash"></i> N° Attachment</span>
+                <span class="badge bg-primary">${projet.nAttachment || 'Non défini'}</span>
               </li>
               <li class="list-group-item d-flex justify-content-between">
-                <span>Montant cumulé</span>
-                <span class="text-success">${projet.montantCumul || '0 €'}</span>
+                <span><i class="bi bi-currency-euro"></i> Montant TTC</span>
+                <span class="badge bg-info">${projet.montantContratTTC || 'Non défini'}</span>
               </li>
               <li class="list-group-item d-flex justify-content-between">
-                <span>Montant encaissé</span>
-                <span class="text-warning">${projet.montantEncaisse || '0 €'}</span>
+                <span><i class="bi bi-calendar-plus"></i> Date attachement</span>
+                <span>${projet.dateAttachement || 'Non défini'}</span>
               </li>
               <li class="list-group-item d-flex justify-content-between">
-                <span>Solde restant</span>
-                <span class="text-danger">${projet.soldeRestant || '0 €'}</span>
+                <span><i class="bi bi-receipt"></i> Statut facture</span>
+                <span class="badge bg-secondary">${projet.statutFacturation || 'Non défini'}</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between">
+                <span><i class="bi bi-calendar-event"></i> Date facture</span>
+                <span>${projet.dateFacture || 'Non défini'}</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between">
+                <span><i class="bi bi-calendar-check"></i> Date paiement</span>
+                <span>${projet.datePaiement || 'Non défini'}</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between">
+                <span><i class="bi bi-cash"></i> Montant encaissé</span>
+                <span class="badge bg-success">${projet.montantEncaisse || 'Non défini'}</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between">
+                <span><i class="bi bi-credit-card"></i> Mode de règlement</span>
+                <span>${projet.modeReglement || 'Non défini'}</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between">
+                <span><i class="bi bi-calculator"></i> Solde</span>
+                <span>${projet.solde || 'Non défini'}</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between">
+                <span><i class="bi bi-chat-text"></i> Remarque règlement</span>
+                <span>${projet.remarqueReglement || 'Non défini'}</span>
               </li>
               <li class="list-group-item">
                 <i class="bi bi-paperclip"></i> Pièce jointe :
                 ${(projet.piecesJointes && projet.piecesJointes.suiviReglementDetaille && projet.piecesJointes.suiviReglementDetaille.nomFichier)
                   ? (() => {
-                      const nom = projet.piecesJointes.suiviReglementDetaille.nomFichier;
+                      const obj = projet.piecesJointes.suiviReglementDetaille;
+                      const nom = obj && obj.nomFichier ? obj.nomFichier : '';
                       const isPdf = nom && nom.toLowerCase().endsWith('.pdf');
                       const url = isPdf
                         ? `/api/pieces-jointes/preview/${nom}`
@@ -692,8 +886,9 @@ function updateSuiviDetaille(projet) {
                       return `<a href="${url}" target="_blank">
                                 <img src="${url}" style="max-width:100px;max-height:100px;"/>
                                 <span style="margin-left:8px;">${nom}</span>
+                                ${(obj && obj.description) ? `<div class='text-muted small'>${obj.description}</div>` : ''}
                               </a>
-                              <div class='mt-2' ${userRole === 'EMPLOYE' ? 'style="display: none;"' : ''}>
+                              <div class='mt-2' ${userRole === 'EMPLOYE' ? 'style=\"display: none;\"' : ''}>
                                 <button type='button' class='btn btn-sm btn-outline-primary me-1' onclick=\"modifierPieceJointe('suivi_reglement_detaille')\">✏️ Modifier</button>
                                 <button type='button' class='btn btn-sm btn-outline-danger' onclick=\"supprimerPieceJointe('suivi_reglement_detaille')\">❌ Supprimer</button>
                               </div>`;
@@ -714,6 +909,7 @@ function updateSuiviDetaille(projet) {
     setTimeout(() => {
       const btn = document.getElementById('btnAddPieceJointeDetail');
       if (btn && (userRole === 'ADMIN' || userRole === 'SUPERVISEUR')) {
+        btn.style.display = 'inline-block';
         btn.onclick = function() {
           const projet = projets[selectedProjetIndex];
           if (!projet || !projet.id) {
@@ -731,6 +927,149 @@ function updateSuiviDetaille(projet) {
           `;
           const modal = new bootstrap.Modal(document.getElementById('pieceJointeModal'));
           modal.show();
+          setTimeout(attachSavePieceJointeHandler, 0);
+        };
+      }
+    }, 0);
+}
+
+function updateReceptionSection(projet) {
+    const receptionSection = document.getElementById('section-reception');
+    if (!receptionSection) return;
+    if (!projet) {
+        receptionSection.innerHTML = '<div class="alert alert-danger">Aucun projet sélectionné</div>';
+        return;
+    }
+
+    // Bouton pour ADMIN/SUPERVISEUR
+    let btnAdd = '';
+    if (userRole === 'ADMIN' || userRole === 'SUPERVISEUR') {
+        btnAdd = `<button type="button" class="btn btn-primary btn-sm mb-3" id="btnAddPieceJointeReception">
+            <i class="bi bi-plus-circle"></i> Ajouter une pièce jointe
+        </button>`;
+    }
+
+    receptionSection.innerHTML = `
+      <div class="section-title d-flex justify-content-between align-items-center">
+        <span><i class="bi bi-file-earmark-arrow-down"></i> Réception (Pièces jointes)</span>
+        ${btnAdd}
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="card card-synthese mb-3">
+            <h6><i class="bi bi-file-earmark-check"></i> PV de réception provisoire</h6>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                <i class="bi bi-paperclip"></i> Pièce jointe :
+                ${(projet.piecesJointes && projet.piecesJointes.pvReceptionProvisoire && projet.piecesJointes.pvReceptionProvisoire.nomFichier)
+                  ? (() => {
+                      const obj = projet.piecesJointes.pvReceptionProvisoire;
+                      const nom = obj.nomFichier;
+                      const isPdf = nom && nom.toLowerCase().endsWith('.pdf');
+                      const url = isPdf
+                        ? `/api/pieces-jointes/preview/${nom}`
+                        : `/api/pieces-jointes/files/${nom}`;
+                      return `<a href="${url}" target="_blank">
+                                <img src="${url}" style="max-width:100px;max-height:100px;"/>
+                                <span style="margin-left:8px;">${nom}</span>
+                                ${obj.description ? `<div class='text-muted small'>${obj.description}</div>` : ''}
+                              </a>
+                              <div class='mt-2' ${userRole === 'EMPLOYE' ? 'style=\"display: none;\"' : ''}>
+                                <button type='button' class='btn btn-sm btn-outline-primary me-1' onclick=\"modifierPieceJointe('pvReceptionProvisoire')\">✏️ Modifier</button>
+                                <button type='button' class='btn btn-sm btn-outline-danger' onclick=\"supprimerPieceJointe('pvReceptionProvisoire')\">❌ Supprimer</button>
+                              </div>`;
+                    })()
+                  : '<span class="text-muted">Aucun fichier</span>'}
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card card-synthese mb-3">
+            <h6><i class="bi bi-file-earmark-check-fill"></i> PV de réception définitif</h6>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                <i class="bi bi-paperclip"></i> Pièce jointe :
+                ${(projet.piecesJointes && projet.piecesJointes.pvReceptionDefinitive && projet.piecesJointes.pvReceptionDefinitive.nomFichier)
+                  ? (() => {
+                      const obj = projet.piecesJointes.pvReceptionDefinitive;
+                      const nom = obj.nomFichier;
+                      const isPdf = nom && nom.toLowerCase().endsWith('.pdf');
+                      const url = isPdf
+                        ? `/api/pieces-jointes/preview/${nom}`
+                        : `/api/pieces-jointes/files/${nom}`;
+                      return `<a href="${url}" target="_blank">
+                                <img src="${url}" style="max-width:100px;max-height:100px;"/>
+                                <span style="margin-left:8px;">${nom}</span>
+                                ${obj.description ? `<div class='text-muted small'>${obj.description}</div>` : ''}
+                              </a>
+                              <div class='mt-2' ${userRole === 'EMPLOYE' ? 'style=\"display: none;\"' : ''}>
+                                <button type='button' class='btn btn-sm btn-outline-primary me-1' onclick=\"modifierPieceJointe('pvReceptionDefinitive')\">✏️ Modifier</button>
+                                <button type='button' class='btn btn-sm btn-outline-danger' onclick=\"supprimerPieceJointe('pvReceptionDefinitive')\">❌ Supprimer</button>
+                              </div>`;
+                    })()
+                  : '<span class="text-muted">Aucun fichier</span>'}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="card card-synthese mb-3">
+            <h6><i class="bi bi-award"></i> Attestation de référence</h6>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                <i class="bi bi-paperclip"></i> Pièce jointe :
+                ${(projet.piecesJointes && projet.piecesJointes.attestationReference && projet.piecesJointes.attestationReference.nomFichier)
+                  ? (() => {
+                      const obj = projet.piecesJointes.attestationReference;
+                      const nom = obj.nomFichier;
+                      const isPdf = nom && nom.toLowerCase().endsWith('.pdf');
+                      const url = isPdf
+                        ? `/api/pieces-jointes/preview/${nom}`
+                        : `/api/pieces-jointes/files/${nom}`;
+                      return `<a href="${url}" target="_blank">
+                                <img src="${url}" style="max-width:100px;max-height:100px;"/>
+                                <span style="margin-left:8px;">${nom}</span>
+                                ${obj.description ? `<div class='text-muted small'>${obj.description}</div>` : ''}
+                              </a>
+                              <div class='mt-2' ${userRole === 'EMPLOYE' ? 'style=\"display: none;\"' : ''}>
+                                <button type='button' class='btn btn-sm btn-outline-primary me-1' onclick=\"modifierPieceJointe('attestationReference')\">✏️ Modifier</button>
+                                <button type='button' class='btn btn-sm btn-outline-danger' onclick=\"supprimerPieceJointe('attestationReference')\">❌ Supprimer</button>
+                              </div>`;
+                    })()
+                  : '<span class="text-muted">Aucun fichier</span>'}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    `;
+
+    // Gestion du clic sur le bouton (après injection)
+    setTimeout(() => {
+      const btn = document.getElementById('btnAddPieceJointeReception');
+      if (btn && (userRole === 'ADMIN' || userRole === 'SUPERVISEUR')) {
+        btn.onclick = function() {
+          const projet = projets[selectedProjetIndex];
+          if (!projet || !projet.id) {
+            showAlert('Aucun projet sélectionné', 'danger');
+            return;
+          }
+          document.getElementById('pieceJointeProjetId').value = projet.id;
+          document.getElementById('pieceJointeForm').reset();
+          // Limite les options du select pour Réception
+          const select = document.getElementById('typePieceJointe');
+          select.innerHTML = `
+            <option value="">Sélectionner un type</option>
+            <option value="pvReceptionProvisoire">PV de réception provisoire</option>
+            <option value="pvReceptionDefinitif">PV de réception définitif</option>
+            <option value="attestationReference">Attestation de référence</option>
+          `;
+          const modal = new bootstrap.Modal(document.getElementById('pieceJointeModal'));
+          modal.show();
+          setTimeout(attachSavePieceJointeHandler, 0);
         };
       }
     }, 0);
@@ -739,119 +1078,359 @@ function updateSuiviDetaille(projet) {
 function updateSyntheseSection(projet) {
     const syntheseSection = document.getElementById('section-synthese');
     if (!syntheseSection) return;
-    if (!projet) {
-        syntheseSection.innerHTML = '<div class="alert alert-danger">Aucun projet sélectionné</div>';
-        return;
+    
+    // Charger d'abord la synthèse globale
+    fetch('/api/projets/synthese')
+        .then(res => res.json())
+        .then(synthese => {
+            // Créer le tableau de bord global
+            syntheseSection.innerHTML = `
+                <div class="section-title"><i class="bi bi-bar-chart"></i> Tableau de bord global</div>
+                
+                <!-- KPIs en haut -->
+                <div class="row mb-4">
+                    <div class="col-md-2">
+                        <div class="card text-center bg-primary text-white">
+                            <div class="card-body">
+                                <i class="bi bi-folder2-open fs-1 mb-2"></i>
+                                <h4 class="card-title">${synthese.projetsEnCours || 0}</h4>
+                                <p class="card-text">Projets en cours</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="card text-center bg-success text-white">
+                            <div class="card-body">
+                                <i class="bi bi-graph-up fs-1 mb-2"></i>
+                                <h4 class="card-title">${synthese.avancementMoyen || 0}%</h4>
+                                <p class="card-text">Avancement moyen</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="card text-center bg-info text-white">
+                            <div class="card-body">
+                                <i class="bi bi-cash-stack fs-1 mb-2"></i>
+                                <h4 class="card-title">${formatCurrency(synthese.totalContrats || 0)}</h4>
+                                <p class="card-text">Total montant TTC</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="card text-center bg-warning text-dark">
+                            <div class="card-body">
+                                <i class="bi bi-cash-coin fs-1 mb-2"></i>
+                                <h4 class="card-title">${formatCurrency(synthese.totalEncaisse || 0)}</h4>
+                                <p class="card-text">Total montant encaissé</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="card text-center bg-danger text-white">
+                            <div class="card-body">
+                                <i class="bi bi-calculator fs-1 mb-2"></i>
+                                <h4 class="card-title">${formatCurrency(synthese.soldeRestant || 0)}</h4>
+                                <p class="card-text">Total solde restant</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="card text-center bg-secondary text-white">
+                            <div class="card-body">
+                                <i class="bi bi-file-earmark-check fs-1 mb-2"></i>
+                                <h4 class="card-title">${synthese.pvReceptionDisponible || 0}</h4>
+                                <p class="card-text">PV réception disponible</p>
+                                <button class="btn btn-sm btn-outline-light mt-2" onclick="showPvReceptionDetails()">
+                                    <i class="bi bi-eye"></i> Voir détails
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tableau de tous les projets -->
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="bi bi-table"></i> Vue d'ensemble de tous les projets</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>N° Projet</th>
+                                        <th>Client</th>
+                                        <th>Désignation</th>
+                                        <th>Type</th>
+                                        <th>Responsable</th>
+                                        <th>Avancement</th>
+                                        <th>Statut Exécution</th>
+                                        <th>Attachement TTC</th>
+                                        <th>Paiement Reçu</th>
+                                        <th>Solde Restant</th>
+                                        <th>Dernière Mise à Jour</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="projetsTableBody">
+                                    <!-- Les projets seront chargés ici -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Charger et afficher tous les projets dans le tableau
+            loadProjetsTable();
+        })
+        .catch(error => {
+            console.error('Erreur lors du chargement de la synthèse:', error);
+            syntheseSection.innerHTML = '<div class="alert alert-danger">Erreur lors du chargement du tableau de bord</div>';
+        });
+}
+
+function loadProjetsTable() {
+    fetch('/api/projets')
+        .then(res => res.json())
+        .then(projets => {
+            const tbody = document.getElementById('projetsTableBody');
+            if (!tbody) return;
+            
+            tbody.innerHTML = projets.map(projet => {
+                const avancement = projet.avancement || projet["% Avancement"] || "0%";
+                const avancementNum = parseInt(avancement);
+                const progressClass = avancementNum >= 80 ? 'bg-success' : avancementNum >= 50 ? 'bg-warning' : 'bg-danger';
+                
+                const statutClass = (projet.statutExecution || '').toLowerCase().includes('terminé') ? 'bg-success' :
+                                  (projet.statutExecution || '').toLowerCase().includes('en cours') ? 'bg-warning' :
+                                  (projet.statutExecution || '').toLowerCase().includes('annulé') ? 'bg-danger' : 'bg-secondary';
+                
+                return `
+                    <tr>
+                        <td><strong>${projet.numeroProjet || projet.numero_projet || projet["N° Projet/CONTRAT"] || 'N/A'}</strong></td>
+                        <td>${projet.client || 'N/A'}</td>
+                        <td>${projet.designation || 'N/A'}</td>
+                        <td>${projet.typeProjet || 'N/A'}</td>
+                        <td>${projet.responsableInterne || 'N/A'}</td>
+                        <td>
+                            <div class="progress" style="height: 20px;">
+                                <div class="progress-bar ${progressClass}" role="progressbar" 
+                                     style="width: ${avancementNum}%" aria-valuenow="${avancementNum}" 
+                                     aria-valuemin="0" aria-valuemax="100">
+                                    ${avancement}
+                                </div>
+                            </div>
+                        </td>
+                        <td><span class="badge ${statutClass}">${projet.statutExecution || 'N/A'}</span></td>
+                        <td>${formatCurrency(parseMontant(projet.montantCumul))}</td>
+                        <td>${formatCurrency(parseMontant(projet.montantEncaisse))}</td>
+                        <td>${formatCurrency(parseMontant(projet.soldeRestant))}</td>
+                        <td>${formatDate(projet.dateFinEffective || projet.dateDebut || 'N/A')}</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary" onclick="selectProjetFromTable(${projets.indexOf(projet)})">
+                                <i class="bi bi-eye"></i> Voir
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        })
+        .catch(error => {
+            console.error('Erreur lors du chargement des projets:', error);
+            const tbody = document.getElementById('projetsTableBody');
+            if (tbody) {
+                tbody.innerHTML = '<tr><td colspan="12" class="text-center text-danger">Erreur lors du chargement des projets</td></tr>';
+            }
+        });
+}
+
+function selectProjetFromTable(index) {
+    selectedProjetIndex = index;
+    document.getElementById('projetSelect').value = index;
+    showSection('info', null);
+    // Mettre à jour l'onglet actif
+    document.querySelectorAll('.sidebar .nav-link').forEach(link => link.classList.remove('active'));
+    document.querySelector('.sidebar .nav-link[onclick*="info"]').classList.add('active');
+}
+
+function formatCurrency(amount) {
+    if (isNaN(amount)) return '0 MAD';
+    return new Intl.NumberFormat('fr-FR', { 
+        style: 'currency', 
+        currency: 'MAD',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+    }).format(amount);
+}
+
+function parseMontant(montantString) {
+    if (!montantString || montantString === 'N/A' || montantString.trim() === '') {
+        return 0;
     }
-    let av = projet.avancement || projet["% Avancement"] || "0%";
-    let avNum = parseInt(av);
-    if (isNaN(avNum)) avNum = 0;
-    syntheseSection.innerHTML = `
-      <div class="section-title"><i class="bi bi-bar-chart"></i> Synthèse du projet</div>
-      <div class="row">
-        <div class="col-md-4">
-          <div class="card text-center mb-3">
-            <div class="card-body">
-              <h6 class="card-title">Progression</h6>
-              <svg width="80" height="80" viewBox="0 0 80 80" class="mb-2">
-                <circle cx="40" cy="40" r="35" stroke="#e0e0e0" stroke-width="8" fill="none"/>
-                <circle cx="40" cy="40" r="35" stroke="#007bff" stroke-width="8" fill="none" stroke-linecap="round" stroke-dasharray="220" stroke-dashoffset="${220 - 220 * avNum / 100}"/>
-                <text x="40" y="48" text-anchor="middle" font-size="16" fill="#333">${av || '0%'}</text>
-              </svg>
-              <p class="card-text">${av || '0%'}</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card text-center mb-3">
-            <div class="card-body">
-              <h6 class="card-title">Statut</h6>
-              <span class="badge bg-secondary fs-6">${projet.statutExecution || 'Statut inconnu'}</span>
-              <p class="card-text mt-2">${projet.statutExecution || 'Non défini'}</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card text-center mb-3">
-            <div class="card-body">
-              <h6 class="card-title">Facturation</h6>
-              <span class="badge bg-warning text-dark fs-6">${projet.statutFacturation || 'Non défini'}</span>
-              <p class="card-text mt-2">${projet.montantEncaisse || '0 €'} / ${projet.montantContratTTC || '0 €'}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="card mb-3">
-        <div class="card-header">
-          <h6 class="mb-0"><i class="bi bi-exclamation-triangle"></i> Alertes et notifications</h6>
-        </div>
-        <div class="card-body">
-          <ul class="mb-0">
-            ${(function() {
-                let alerts = [];
-                let now = new Date();
-                let dateFin = projet.dateFinEffective || projet["Date de fin effective"] || '';
-                let statutExe = (projet.statutExecution || '').toLowerCase();
-                if (dateFin && statutExe !== 'terminé') {
-                    let parts = dateFin.split('-');
-                    if (parts.length === 3) {
-                        let d = new Date(parts[0], parts[1]-1, parts[2]);
-                        if (d < now) alerts.push('⚠️ Le projet dépasse la date de fin effective');
-                    }
-                }
-                if (!projet.piecesJointes || !projet.piecesJointes.pvReceptionDefinitive || !projet.piecesJointes.pvReceptionDefinitive.nomFichier) {
-                    alerts.push('⚠️ PV de réception définitive manquant');
-                }
-                let montantEncaisse = parseFloat((projet.montantEncaisse || "0").toString().replace(/[^\d.]/g, ''));
-                let montantContrat = parseFloat((projet.montantContratTTC || "0").toString().replace(/[^\d.]/g, ''));
-                if (!isNaN(montantContrat) && !isNaN(montantEncaisse) && montantEncaisse < montantContrat) {
-                    alerts.push('💰 Montant encaissé inférieur au contrat');
-                }
-                return alerts.map(a => `<li>${a}</li>`).join('');
-            })()}
-          </ul>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <h6 class="mb-0"><i class="bi bi-file-earmark-check"></i> État des pièces jointes</h6>
-        </div>
-        <div class="card-body">
-          <div class="row">
-            <div class="col-md-2">
-              <span class="badge d-block mb-2 ${projet.piecesJointes && projet.piecesJointes.contrat && projet.piecesJointes.contrat.nomFichier && projet.piecesJointes.contrat.nomFichier.trim().toLowerCase() !== 'ns.pdf' ? 'bg-success text-white' : 'bg-light text-dark'}">
-                📎 ${projet.piecesJointes && projet.piecesJointes.contrat && projet.piecesJointes.contrat.nomFichier && projet.piecesJointes.contrat.nomFichier.trim().toLowerCase() !== 'ns.pdf' ? 'Contrat' : 'Aucun fichier'}
-              </span>
-            </div>
-            <div class="col-md-2">
-              <span class="badge d-block mb-2 ${projet.piecesJointes && projet.piecesJointes.pvReceptionProvisoire && projet.piecesJointes.pvReceptionProvisoire.nomFichier && projet.piecesJointes.pvReceptionProvisoire.nomFichier.trim().toLowerCase() !== 'ns.pdf' ? 'bg-success text-white' : 'bg-light text-dark'}">
-                ⚠️ ${projet.piecesJointes && projet.piecesJointes.pvReceptionProvisoire && projet.piecesJointes.pvReceptionProvisoire.nomFichier && projet.piecesJointes.pvReceptionProvisoire.nomFichier.trim().toLowerCase() !== 'ns.pdf' ? 'PV réception provisoire' : 'Aucun fichier'}
-              </span>
-            </div>
-            <div class="col-md-2">
-              <span class="badge d-block mb-2 ${projet.piecesJointes && projet.piecesJointes.pvReceptionDefinitive && projet.piecesJointes.pvReceptionDefinitive.nomFichier && projet.piecesJointes.pvReceptionDefinitive.nomFichier.trim().toLowerCase() !== 'ns.pdf' ? 'bg-success text-white' : 'bg-light text-dark'}">
-                ⚠️ ${projet.piecesJointes && projet.piecesJointes.pvReceptionDefinitive && projet.piecesJointes.pvReceptionDefinitive.nomFichier && projet.piecesJointes.pvReceptionDefinitive.nomFichier.trim().toLowerCase() !== 'ns.pdf' ? 'PV réception définitive' : 'Aucun fichier'}
-              </span>
-            </div>
-            <div class="col-md-2">
-              <span class="badge d-block mb-2 ${projet.piecesJointes && projet.piecesJointes.attestationReference && projet.piecesJointes.attestationReference.nomFichier && projet.piecesJointes.attestationReference.nomFichier.trim().toLowerCase() !== 'ns.pdf' ? 'bg-success text-white' : 'bg-light text-dark'}">
-                ⚠️ ${projet.piecesJointes && projet.piecesJointes.attestationReference && projet.piecesJointes.attestationReference.nomFichier && projet.piecesJointes.attestationReference.nomFichier.trim().toLowerCase() !== 'ns.pdf' ? 'Attestation' : 'Aucun fichier'}
-              </span>
-            </div>
-            <div class="col-md-2">
-              <span class="badge d-block mb-2 ${projet.piecesJointes && projet.piecesJointes.suiviExecutionDetaille && projet.piecesJointes.suiviExecutionDetaille.nomFichier && projet.piecesJointes.suiviExecutionDetaille.nomFichier.trim().toLowerCase() !== 'ns.pdf' ? 'bg-success text-white' : 'bg-light text-dark'}">
-                📝 ${projet.piecesJointes && projet.piecesJointes.suiviExecutionDetaille && projet.piecesJointes.suiviExecutionDetaille.nomFichier && projet.piecesJointes.suiviExecutionDetaille.nomFichier.trim().toLowerCase() !== 'ns.pdf' ? 'Suivi exécution détaillée' : 'Aucun fichier'}
-              </span>
-            </div>
-            <div class="col-md-2">
-              <span class="badge d-block mb-2 ${projet.piecesJointes && projet.piecesJointes.suiviReglementDetaille && projet.piecesJointes.suiviReglementDetaille.nomFichier && projet.piecesJointes.suiviReglementDetaille.nomFichier.trim().toLowerCase() !== 'ns.pdf' ? 'bg-success text-white' : 'bg-light text-dark'}">
-                💶 ${projet.piecesJointes && projet.piecesJointes.suiviReglementDetaille && projet.piecesJointes.suiviReglementDetaille.nomFichier && projet.piecesJointes.suiviReglementDetaille.nomFichier.trim().toLowerCase() !== 'ns.pdf' ? 'Suivi règlement détaillé' : 'Aucun fichier'}
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-    `;
+    
+    // Nettoyer la chaîne : enlever les espaces, remplacer les virgules par des points
+    let cleaned = montantString.toString().trim();
+    
+    // Si c'est déjà un nombre, le retourner directement
+    if (!isNaN(cleaned)) {
+        return parseFloat(cleaned);
+    }
+    
+    // Enlever tous les caractères non numériques sauf les virgules et points
+    cleaned = cleaned.replace(/[^\d.,]/g, '');
+    
+    // Si la chaîne contient une virgule, c'est probablement un séparateur de milliers
+    if (cleaned.includes(',')) {
+        // Si c'est le format français (1,234.56), remplacer la virgule par rien
+        if (cleaned.match(/^\d{1,3}(,\d{3})*(\.\d+)?$/)) {
+            cleaned = cleaned.replace(/,/g, '');
+        } else {
+            // Sinon, remplacer la virgule par un point (format européen)
+            cleaned = cleaned.replace(',', '.');
+        }
+    }
+    
+    const result = parseFloat(cleaned);
+    return isNaN(result) ? 0 : result;
+}
+
+function formatDate(dateString) {
+    if (!dateString || dateString === 'N/A') return 'N/A';
+    
+    try {
+        // Si c'est déjà une date au format ISO
+        if (dateString.includes('-')) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('fr-FR');
+        }
+        
+        // Si c'est au format américain (MM/DD/YYYY)
+        if (dateString.includes('/')) {
+            const parts = dateString.split('/');
+            if (parts.length === 3) {
+                const date = new Date(parts[2], parts[0] - 1, parts[1]);
+                return date.toLocaleDateString('fr-FR');
+            }
+        }
+        
+        return dateString;
+    } catch (error) {
+        return dateString;
+    }
+}
+
+function showPvReceptionDetails() {
+    fetch('/api/projets')
+        .then(res => res.json())
+        .then(projets => {
+            const projetsAvecPv = projets.filter(projet => {
+                return projet.piecesJointes && 
+                       ((projet.piecesJointes.pvReceptionProvisoire && projet.piecesJointes.pvReceptionProvisoire.nomFichier) ||
+                        (projet.piecesJointes.pvReceptionDefinitive && projet.piecesJointes.pvReceptionDefinitive.nomFichier));
+            });
+            
+            let detailsHtml = `
+                <div class="modal fade" id="pvDetailsModal" tabindex="-1">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">
+                                    <i class="bi bi-file-earmark-check"></i> Détails des PV de réception disponibles
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p class="text-muted mb-3">${projetsAvecPv.length} projet(s) avec PV de réception disponible(s)</p>
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead class="table-dark">
+                                            <tr>
+                                                <th>N° Projet</th>
+                                                <th>Client</th>
+                                                <th>PV Provisoire</th>
+                                                <th>PV Définitif</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+            `;
+            
+            projetsAvecPv.forEach(projet => {
+                const pvProvisoire = projet.piecesJointes.pvReceptionProvisoire && projet.piecesJointes.pvReceptionProvisoire.nomFichier;
+                const pvDefinitif = projet.piecesJointes.pvReceptionDefinitive && projet.piecesJointes.pvReceptionDefinitive.nomFichier;
+                
+                detailsHtml += `
+                    <tr>
+                        <td><strong>${projet.numeroProjet || 'N/A'}</strong></td>
+                        <td>${projet.client || 'N/A'}</td>
+                        <td>
+                            ${pvProvisoire ? 
+                                `<span class="badge bg-success">✓ ${pvProvisoire}</span>` : 
+                                `<span class="badge bg-secondary">Non disponible</span>`
+                            }
+                        </td>
+                        <td>
+                            ${pvDefinitif ? 
+                                `<span class="badge bg-success">✓ ${pvDefinitif}</span>` : 
+                                `<span class="badge bg-secondary">Non disponible</span>`
+                            }
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary" onclick="selectProjetFromPvDetails('${projet.numeroProjet}')">
+                                <i class="bi bi-eye"></i> Voir projet
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            detailsHtml += `
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Supprimer l'ancien modal s'il existe
+            const oldModal = document.getElementById('pvDetailsModal');
+            if (oldModal) {
+                oldModal.remove();
+            }
+            
+            // Ajouter le nouveau modal au body
+            document.body.insertAdjacentHTML('beforeend', detailsHtml);
+            
+            // Afficher le modal
+            const modal = new bootstrap.Modal(document.getElementById('pvDetailsModal'));
+            modal.show();
+        })
+        .catch(error => {
+            console.error('Erreur lors du chargement des détails PV:', error);
+            showAlert('Erreur lors du chargement des détails', 'danger');
+        });
+}
+
+function selectProjetFromPvDetails(numeroProjet) {
+    // Fermer le modal
+    const modal = bootstrap.Modal.getInstance(document.getElementById('pvDetailsModal'));
+    if (modal) {
+        modal.hide();
+    }
+    
+    // Trouver l'index du projet dans la liste
+    const projetIndex = projets.findIndex(p => p.numeroProjet === numeroProjet);
+    if (projetIndex !== -1) {
+        selectProjetFromTable(projetIndex);
+    } else {
+        showAlert('Projet non trouvé', 'warning');
+    }
 }
 
 function showSection(section, event) {
@@ -888,8 +1467,10 @@ function showSection(section, event) {
         updateSuiviExecution(projets[selectedProjetIndex]);
     } else if (section === 'detail') {
         updateSuiviDetaille(projets[selectedProjetIndex]);
+    } else if (section === 'reception') {
+        updateReceptionSection(projets[selectedProjetIndex]);
     } else if (section === 'synthese') {
-        updateSyntheseSection(projets[selectedProjetIndex]);
+        updateSyntheseSection();
     }
 }
 
@@ -983,6 +1564,9 @@ if (document.getElementById('projetSelect')) {
 // Actions CRUD
 const actions = document.getElementById('actionsProjet');
 const btnAddPieceJointe = document.getElementById('btnAddPieceJointe');
+const btnAddProjet = document.getElementById('btnAddProjet');
+const btnEditProjet = document.getElementById('btnEditProjet');
+const btnDeleteProjet = document.getElementById('btnDeleteProjet');
 if (userRole !== 'ADMIN' && userRole !== 'SUPERVISEUR') {
     actions.style.display = 'none';
     if (btnAddPieceJointe) btnAddPieceJointe.style.display = 'none';
@@ -990,150 +1574,198 @@ if (userRole !== 'ADMIN' && userRole !== 'SUPERVISEUR') {
     actions.style.display = 'flex';
     if (btnAddPieceJointe) btnAddPieceJointe.style.display = 'inline-block';
 }
-document.getElementById('btnAddProjet').onclick = () => {
-    if (userRole === 'ADMIN' || userRole === 'SUPERVISEUR') {
-        document.getElementById('projetForm').reset();
-        document.getElementById('projetId').value = '';
-        const modal = new bootstrap.Modal(document.getElementById('projetModal'));
-        modal.show();
+if (btnAddProjet) {
+  btnAddProjet.onclick = () => {
+      if (userRole === 'ADMIN' || userRole === 'SUPERVISEUR') {
+          document.getElementById('projetForm').reset();
+          document.getElementById('projetId').value = '';
+          const modal = new bootstrap.Modal(document.getElementById('projetModal'));
+          modal.show();
+      }
+  };
+}
+if (btnEditProjet) {
+  btnEditProjet.onclick = () => {
+      if (userRole === 'ADMIN' || userRole === 'SUPERVISEUR') {
+          const projet = projets[selectedProjetIndex];
+          console.log('Projet à modifier:', projet);
+          if (!projet) {
+              showAlert('Aucun projet sélectionné', 'danger');
+              return;
+          }
+          document.getElementById('projetId').value = projet.id || '';
+          document.getElementById('numeroProjet').value = projet.numeroProjet || '';
+          document.getElementById('client').value = projet.client || '';
+          document.getElementById('designation').value = projet.designation || '';
+          document.getElementById('typeProjet').value = projet.typeProjet || '';
+          document.getElementById('responsableInterne').value = projet.responsableInterne || '';
+          document.getElementById('responsableExterne').value = projet.responsableExterne || '';
+          document.getElementById('dureeContractuelle').value = projet.dureeContractuelle || '';
+          document.getElementById('montantContratTTC').value = projet.montantContratTTC || '';
+          document.getElementById('montantAvenant').value = projet.montantAvenant || '';
+
+          document.getElementById('dateDebut').value = projet.dateDebut || '';
+          document.getElementById('dateFinEffective').value = projet.dateFinEffective || '';
+          document.getElementById('pourcentageAvancement').value = projet.avancement || '';
+          document.getElementById('statutExecution').value = projet.statutExecution || '';
+          document.getElementById('montantCumul').value = projet.montantCumul || '';
+          document.getElementById('montantEncaisse').value = projet.montantEncaisse || '';
+          document.getElementById('soldeRestant').value = projet.soldeRestant || '';
+          document.getElementById('statutFacturation').value = projet.statutFacturation || '';
+          document.getElementById('remarques').value = projet.remarques || '';
+          
+          // Remplir les nouveaux champs de suivi d'exécution détaillé
+          document.getElementById('phase').value = projet.phase || '';
+          document.getElementById('zone').value = projet.zone || '';
+          document.getElementById('quantiteInstallee').value = projet.quantiteInstallee || '';
+          document.getElementById('remarquesExecution').value = projet.remarquesExecution || '';
+          
+          // Remplir les nouveaux champs de suivi règlement détaillé
+          document.getElementById('nAttachment').value = projet.nAttachment || '';
+          document.getElementById('dateAttachement').value = projet.dateAttachement || '';
+          document.getElementById('dateFacture').value = projet.dateFacture || '';
+          document.getElementById('datePaiement').value = projet.datePaiement || '';
+          document.getElementById('modeReglement').value = projet.modeReglement || '';
+          document.getElementById('remarqueReglement').value = projet.remarqueReglement || '';
+          document.getElementById('solde').value = projet.solde || '';
+          const modal = new bootstrap.Modal(document.getElementById('projetModal'));
+          modal.show();
+      }
+  };
+}
+if (btnDeleteProjet) {
+  btnDeleteProjet.onclick = () => {
+      if (userRole === 'ADMIN' || userRole === 'SUPERVISEUR') {
+          const projet = projets[selectedProjetIndex];
+          console.log('Projet sélectionné:', projet);
+          if (!projet || !projet.id) {
+              showAlert('Projet sans ID - impossible de supprimer', 'danger');
+              return;
+          }
+          if (confirm('Supprimer ce projet ?')) {
+              fetch(`/api/projets/${projet.id}`, { method: 'DELETE' })
+                  .then(res => {
+                      if (res.ok) {
+                          showAlert('Projet supprimé avec succès !', 'success');
+                          // Rafraîchir les données du projet
+                          fetch('/api/projets')
+                            .then(res => res.json())
+                            .then(data => {
+                              projets = data;
+                              // Si le projet supprimé était le dernier, sélectionner le nouveau dernier
+                              if (selectedProjetIndex >= projets.length) {
+                                  selectedProjetIndex = Math.max(0, projets.length - 1);
+                              }
+                              renderProjetSelector();
+                              renderSections();
+                            });
+                      } else {
+                          showAlert('Erreur lors de la suppression.', 'danger');
+                      }
+                  }).catch(error => {
+                      console.error('Erreur:', error);
+                      showAlert('Erreur lors de la suppression.', 'danger');
+                  });
+          }
+      }
+  };
+}
+if (btnAddPieceJointe) {
+  btnAddPieceJointe.onclick = () => {
+      if (userRole === 'ADMIN' || userRole === 'SUPERVISEUR') {
+          const projet = projets[selectedProjetIndex];
+          if (!projet || !projet.id) {
+              showAlert('Aucun projet sélectionné', 'danger');
+              return;
+          }
+          document.getElementById('pieceJointeProjetId').value = projet.id;
+          document.getElementById('pieceJointeForm').reset();
+          // Remettre toutes les options
+          const select = document.getElementById('typePieceJointe');
+          select.innerHTML = `
+            <option value="">Sélectionner un type</option>
+            <option value="pvReceptionProvisoire">PV de réception provisoire</option>
+            <option value="pvReceptionDefinitif">PV de réception définitive</option>
+            <option value="attestationReference">Attestation de référence</option>
+          `;
+          const modal = new bootstrap.Modal(document.getElementById('pieceJointeModal'));
+          modal.show();
+          setTimeout(attachSavePieceJointeHandler, 0);
+      }
+  };
+}
+
+// Gestion des pièces jointes - SUPPRIMÉ car déjà géré plus haut avec protection
+
+// Handler unifié pour l'enregistrement de pièce jointe (ajout/modification)
+function attachSavePieceJointeHandler() {
+    const btnSave = document.getElementById('btnSavePieceJointe');
+    if (btnSave) {
+        btnSave.onclick = function() {
+            if (userRole === 'EMPLOYE') {
+                showAlert('Vous n\'avez pas les permissions pour effectuer cette action.', 'warning');
+                return;
+            }
+            const formData = new FormData();
+            const projetId = document.getElementById('pieceJointeProjetId').value;
+            let type = document.getElementById('typePieceJointe').value;
+            // Correction : si le select est désactivé, prendre la valeur du champ hidden
+            if (document.getElementById('typePieceJointe').disabled) {
+                const hiddenType = document.getElementById('hiddenTypePieceJointe');
+                if (hiddenType && hiddenType.value) {
+                    type = hiddenType.value;
+                }
+            }
+            const fichier = document.getElementById('fichierPieceJointe').files[0];
+            const description = document.getElementById('descriptionPieceJointe').value;
+            
+            formData.append('projetId', projetId);
+            formData.append('type', type);
+            formData.append('description', description);
+            
+            // Si modification et pas de nouveau fichier, envoyer l'ancien nom de fichier
+            if (fichier) {
+                formData.append('fichier', fichier);
+            } else {
+                // On récupère le nom du fichier courant pour ce type
+                const projet = projets[selectedProjetIndex];
+                let nomFichier = '';
+                if (projet && projet.piecesJointes && projet.piecesJointes[type] && projet.piecesJointes[type].nomFichier) {
+                    nomFichier = projet.piecesJointes[type].nomFichier;
+                }
+                if (nomFichier) {
+                    formData.append('nomFichier', nomFichier);
+                }
+            }
+            
+            fetch('/api/pieces-jointes', {
+                method: 'POST',
+                body: formData
+            }).then(res => {
+                if (res.ok) {
+                    showAlert('Pièce jointe enregistrée avec succès !', 'success');
+                    bootstrap.Modal.getInstance(document.getElementById('pieceJointeModal')).hide();
+                    fetch('/api/projets')
+                      .then(res => res.json())
+                      .then(data => {
+                        projets = data;
+                        const idx = projets.findIndex(p => p.id == projetId);
+                        selectedProjetIndex = idx !== -1 ? idx : 0;
+                        renderProjetSelector();
+                        renderSections();
+                      });
+                } else {
+                    res.text().then(msg => showAlert('Erreur lors de l\'enregistrement : ' + msg, 'danger'));
+                }
+            }).catch(error => {
+                console.error('Erreur:', error);
+                showAlert('Erreur lors de l\'enregistrement.', 'danger');
+            });
+        };
     }
-};
-document.getElementById('btnEditProjet').onclick = () => {
-    if (userRole === 'ADMIN' || userRole === 'SUPERVISEUR') {
-        const projet = projets[selectedProjetIndex];
-        console.log('Projet à modifier:', projet);
-        if (!projet) {
-            showAlert('Aucun projet sélectionné', 'danger');
-            return;
-        }
-        document.getElementById('projetId').value = projet.id || '';
-        document.getElementById('numeroProjet').value = projet.numeroProjet || '';
-        document.getElementById('client').value = projet.client || '';
-        document.getElementById('designation').value = projet.designation || '';
-        document.getElementById('typeProjet').value = projet.typeProjet || '';
-        document.getElementById('responsableInterne').value = projet.responsableInterne || '';
-        document.getElementById('responsableExterne').value = projet.responsableExterne || '';
-        document.getElementById('dureeContractuelle').value = projet.dureeContractuelle || '';
-        document.getElementById('montantContratTTC').value = projet.montantContratTTC || '';
-        document.getElementById('montantAvenant').value = projet.montantAvenant || '';
+}
 
-        document.getElementById('dateDebut').value = projet.dateDebut || '';
-        document.getElementById('dateFinEffective').value = projet.dateFinEffective || '';
-        document.getElementById('pourcentageAvancement').value = projet.pourcentageAvancement || '';
-        document.getElementById('statutExecution').value = projet.statutExecution || '';
-        document.getElementById('montantCumul').value = projet.montantCumul || '';
-        document.getElementById('montantEncaisse').value = projet.montantEncaisse || '';
-        document.getElementById('soldeRestant').value = projet.soldeRestant || '';
-        document.getElementById('statutFacturation').value = projet.statutFacturation || '';
-        document.getElementById('remarques').value = projet.remarques || '';
-        const modal = new bootstrap.Modal(document.getElementById('projetModal'));
-        modal.show();
-    }
-};
-document.getElementById('btnDeleteProjet').onclick = () => {
-    if (userRole === 'ADMIN' || userRole === 'SUPERVISEUR') {
-        const projet = projets[selectedProjetIndex];
-        console.log('Projet sélectionné:', projet);
-        if (!projet || !projet.id) {
-            showAlert('Projet sans ID - impossible de supprimer', 'danger');
-            return;
-        }
-        if (confirm('Supprimer ce projet ?')) {
-            fetch(`/api/projets/${projet.id}`, { method: 'DELETE' })
-                .then(res => {
-                    if (res.ok) {
-                        showAlert('Projet supprimé avec succès !', 'success');
-                        // Rafraîchir les données du projet
-                        fetch('/api/projets')
-                          .then(res => res.json())
-                          .then(data => {
-                            projets = data;
-                            // Si le projet supprimé était le dernier, sélectionner le nouveau dernier
-                            if (selectedProjetIndex >= projets.length) {
-                                selectedProjetIndex = Math.max(0, projets.length - 1);
-                            }
-                            renderProjetSelector();
-                            renderSections();
-                          });
-                    } else {
-                        showAlert('Erreur lors de la suppression.', 'danger');
-                    }
-                }).catch(error => {
-                    console.error('Erreur:', error);
-                    showAlert('Erreur lors de la suppression.', 'danger');
-                });
-        }
-    }
-};
-
-// Gestion des pièces jointes
-document.getElementById('btnAddPieceJointe').onclick = () => {
-    if (userRole === 'ADMIN' || userRole === 'SUPERVISEUR') {
-        const projet = projets[selectedProjetIndex];
-        if (!projet || !projet.id) {
-            showAlert('Aucun projet sélectionné', 'danger');
-            return;
-        }
-        document.getElementById('pieceJointeProjetId').value = projet.id;
-        document.getElementById('pieceJointeForm').reset();
-        // Remettre toutes les options
-        const select = document.getElementById('typePieceJointe');
-        select.innerHTML = `
-          <option value="">Sélectionner un type</option>
-          <option value="contrat">Contrat</option>
-          <option value="pvReceptionProvisoire">PV de réception provisoire</option>
-          <option value="pvReceptionDefinitif">PV de réception définitive</option>
-          <option value="attestationReference">Attestation de référence</option>
-        `;
-        const modal = new bootstrap.Modal(document.getElementById('pieceJointeModal'));
-        modal.show();
-    }
-};
-
-document.getElementById('btnSavePieceJointe').onclick = () => {
-    const formData = new FormData();
-    const projetId = document.getElementById('pieceJointeProjetId').value;
-    const type = document.getElementById('typePieceJointe').value;
-    const fichier = document.getElementById('fichierPieceJointe').files[0];
-    const description = document.getElementById('descriptionPieceJointe').value;
-
-    if (!type || !fichier) {
-        showAlert('Veuillez sélectionner un type et un fichier pour ajouter une pièce jointe', 'warning');
-        return;
-    }
-
-    formData.append('projetId', projetId);
-    formData.append('type', type);
-    formData.append('fichier', fichier);
-    formData.append('description', description);
-
-    fetch('/api/pieces-jointes', {
-        method: 'POST',
-        body: formData
-    }).then(res => {
-        if (res.ok) {
-            showAlert('Pièce jointe ajoutée avec succès !', 'success');
-            bootstrap.Modal.getInstance(document.getElementById('pieceJointeModal')).hide();
-            // Rafraîchir les données du projet
-            fetch('/api/projets')
-              .then(res => res.json())
-              .then(data => {
-                projets = data;
-                // Reselect le projet courant
-                const idx = projets.findIndex(p => p.id == projetId);
-                selectedProjetIndex = idx !== -1 ? idx : 0;
-                renderProjetSelector();
-                renderSections();
-              });
-        } else {
-            showAlert('Erreur lors de l\'ajout de la pièce jointe.', 'danger');
-        }
-    }).catch(error => {
-        console.error('Erreur:', error);
-        showAlert('Erreur lors de l\'ajout de la pièce jointe.', 'danger');
-    });
-};
-
+// Correction suppression : afficher l'erreur du backend si besoin
 function supprimerPieceJointe(type) {
     if (userRole === 'EMPLOYE') {
         showAlert('Vous n\'avez pas les permissions pour effectuer cette action.', 'warning');
@@ -1158,13 +1790,14 @@ function supprimerPieceJointe(type) {
                     renderSections();
                 });
         } else {
-            showAlert('Erreur lors de la suppression de la pièce jointe.', 'danger');
+            res.text().then(msg => showAlert('Erreur lors de la suppression : ' + msg, 'danger'));
         }
     }).catch(error => {
-        showAlert('Erreur lors de la suppression de la pièce jointe.', 'danger');
+        showAlert('Erreur lors de la suppression.', 'danger');
     });
 }
 
+// Dans modifierPieceJointe(type), stocker le type courant dans data-current-type
 function modifierPieceJointe(type) {
     if (userRole === 'EMPLOYE') {
         showAlert('Vous n\'avez pas les permissions pour effectuer cette action.', 'warning');
@@ -1179,8 +1812,10 @@ function modifierPieceJointe(type) {
     document.getElementById('pieceJointeForm').reset();
     document.getElementById('typePieceJointe').value = type;
     document.getElementById('typePieceJointe').disabled = true;
+    document.getElementById('typePieceJointe').setAttribute('data-current-type', type);
     const modal = new bootstrap.Modal(document.getElementById('pieceJointeModal'));
     modal.show();
+    setTimeout(attachSavePieceJointeHandler, 0);
 }
 
 // Quand tu ouvres la modale en mode ajout classique, réactive le select
@@ -1199,111 +1834,240 @@ if (pieceJointeModal) {
     });
 }
 
-// Rafraîchissement automatique après ajout/modification
-if (document.getElementById('btnSavePieceJointe')) {
-    document.getElementById('btnSavePieceJointe').onclick = () => {
-        if (userRole === 'EMPLOYE') {
-            showAlert('Vous n\'avez pas les permissions pour effectuer cette action.', 'warning');
-            return;
-        }
-        const formData = new FormData();
-        const projetId = document.getElementById('pieceJointeProjetId').value;
-        const type = document.getElementById('typePieceJointe').value;
-        const fichier = document.getElementById('fichierPieceJointe').files[0];
-        const description = document.getElementById('descriptionPieceJointe').value;
 
-        if (!type || !fichier) {
-            showAlert('Veuillez sélectionner un type et un fichier pour ajouter une pièce jointe', 'warning');
-            return;
-        }
 
-        formData.append('projetId', projetId);
-        formData.append('type', type);
-        formData.append('fichier', fichier);
-        formData.append('description', description);
-
-        fetch('/api/pieces-jointes', {
-            method: 'POST',
-            body: formData
-        }).then(res => {
-            if (res.ok) {
-                showAlert('Pièce jointe ajoutée/modifiée avec succès !', 'success');
-                bootstrap.Modal.getInstance(document.getElementById('pieceJointeModal')).hide();
-                fetch('/api/projets')
-                    .then(res => res.json())
-                    .then(data => {
-                        projets = data;
-                        renderProjetSelector();
-                        renderSections();
-                    });
-            } else {
-                showAlert('Erreur lors de l\'ajout de la pièce jointe.', 'danger');
-            }
-        }).catch(error => {
-            showAlert('Erreur lors de l\'ajout de la pièce jointe.', 'danger');
-        });
-    };
-}
-
-document.getElementById('projetForm').onsubmit = function(e) {
-    e.preventDefault();
+// Fonction pour sauvegarder le suivi règlement détaillé
+function sauvegarderSuiviReglement() {
     if (userRole === 'EMPLOYE') {
         showAlert('Vous n\'avez pas les permissions pour effectuer cette action.', 'warning');
         return;
     }
-    if (!validateProjetForm()) return;
-    const id = document.getElementById('projetId').value;
-    const projet = {
-        numeroProjet: document.getElementById('numeroProjet').value,
-        client: document.getElementById('client').value,
-        designation: document.getElementById('designation').value,
-        typeProjet: document.getElementById('typeProjet').value,
-        responsableInterne: document.getElementById('responsableInterne').value,
-        responsableExterne: document.getElementById('responsableExterne').value,
-        dureeContractuelle: document.getElementById('dureeContractuelle').value,
-        montantContratTTC: document.getElementById('montantContratTTC').value,
-        montantAvenant: document.getElementById('montantAvenant').value,
-
-        dateDebut: document.getElementById('dateDebut').value,
-        dateFinEffective: document.getElementById('dateFinEffective').value,
-        pourcentageAvancement: document.getElementById('pourcentageAvancement').value,
-        statutExecution: document.getElementById('statutExecution').value,
-        montantCumul: document.getElementById('montantCumul').value,
-        montantEncaisse: document.getElementById('montantEncaisse').value,
-        soldeRestant: document.getElementById('soldeRestant').value,
-        statutFacturation: document.getElementById('statutFacturation').value,
-        remarques: document.getElementById('remarques').value
+    
+    const projet = projets[selectedProjetIndex];
+    if (!projet || !projet.id) {
+        showAlert('Aucun projet sélectionné', 'danger');
+        return;
+    }
+    
+    const formData = {
+        id: projet.id,
+        nAttachment: document.getElementById('nAttachment').value,
+        dateAttachement: document.getElementById('dateAttachement').value,
+        dateFacture: document.getElementById('dateFacture').value,
+        datePaiement: document.getElementById('datePaiement').value,
+        modeReglement: document.getElementById('modeReglement').value,
+        remarqueReglement: document.getElementById('remarqueReglement').value
     };
-    const method = id ? 'PUT' : 'POST';
-    const url = id ? `/api/projets/${id}` : '/api/projets';
-    fetch(url, {
-        method: method,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(projet)
+    
+    fetch(`/api/projets/${projet.id}/suivi-reglement`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
     }).then(res => {
         if (res.ok) {
-            showAlert('Projet enregistré avec succès !', 'success');
-            bootstrap.Modal.getInstance(document.getElementById('projetModal')).hide();
+            showAlert('Suivi règlement sauvegardé avec succès !', 'success');
             // Rafraîchir les données du projet
             fetch('/api/projets')
-              .then(res => res.json())
-              .then(data => {
-                projets = data;
-                // Si c'est un nouveau projet, sélectionner le dernier
-                if (!id) {
-                    selectedProjetIndex = projets.length - 1;
-                }
-                renderProjetSelector();
-                renderSections();
-              });
+                .then(res => res.json())
+                .then(data => {
+                    projets = data;
+                    const idx = projets.findIndex(p => p.id == projet.id);
+                    selectedProjetIndex = idx !== -1 ? idx : 0;
+                    renderProjetSelector();
+                    renderSections();
+                });
         } else {
-            showAlert('Erreur lors de l\'enregistrement.', 'danger');
+            res.text().then(msg => showAlert('Erreur lors de la sauvegarde : ' + msg, 'danger'));
         }
     }).catch(error => {
         console.error('Erreur:', error);
-        showAlert('Erreur lors de l\'enregistrement.', 'danger');
+        showAlert('Erreur lors de la sauvegarde.', 'danger');
     });
-};
+}
+
+// Initialisation du handler pour le bouton d'enregistrement de pièce jointe
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOMContentLoaded - Initialisation des gestionnaires...');
+    if (document.getElementById('btnSavePieceJointe')) {
+        attachSavePieceJointeHandler();
+    }
+    
+    // Gestionnaire spécifique pour le bouton Enregistrer du projet
+    const btnSaveProjet = document.getElementById('btnSaveProjet');
+    if (btnSaveProjet) {
+        console.log('Bouton Enregistrer projet trouvé, ajout du gestionnaire...');
+        btnSaveProjet.onclick = function(e) {
+            e.preventDefault();
+            console.log('Clic sur Enregistrer projet détecté !');
+            
+            // Déclencher la soumission du formulaire
+            const projetForm = document.getElementById('projetForm');
+            if (projetForm) {
+                console.log('Soumission du formulaire projet...');
+                projetForm.dispatchEvent(new Event('submit'));
+            } else {
+                console.error('Formulaire projet non trouvé !');
+            }
+        };
+    } else {
+        console.error('Bouton Enregistrer projet non trouvé !');
+    }
+});
+
+// Gestionnaire d'événements pour le formulaire de projet
+const projetForm = document.getElementById('projetForm');
+if (projetForm) {
+    projetForm.onsubmit = function(e) {
+        e.preventDefault();
+        console.log('Submit intercepté !');
+        if (userRole === 'EMPLOYE') {
+            showAlert('Vous n\'avez pas les permissions pour effectuer cette action.', 'warning');
+            return;
+        }
+        if (!validateProjetForm()) return;
+        const id = document.getElementById('projetId').value;
+        // Récupération des nouveaux champs avec vérification
+        const phase = document.getElementById('phase').value;
+        const zone = document.getElementById('zone').value;
+        const quantiteInstallee = document.getElementById('quantiteInstallee').value;
+        const remarquesExecution = document.getElementById('remarquesExecution').value;
+        
+        // Récupération des nouveaux champs règlement
+        const nAttachment = document.getElementById('nAttachment').value;
+        const dateAttachement = document.getElementById('dateAttachement').value;
+        const dateFacture = document.getElementById('dateFacture').value;
+        const datePaiement = document.getElementById('datePaiement').value;
+        const modeReglement = document.getElementById('modeReglement').value;
+        const remarqueReglement = document.getElementById('remarqueReglement').value;
+        
+        console.log('Nouveaux champs récupérés:', {
+            phase: phase,
+            zone: zone,
+            quantiteInstallee: quantiteInstallee,
+            remarquesExecution: remarquesExecution,
+            nAttachment: nAttachment,
+            dateAttachement: dateAttachement,
+            dateFacture: dateFacture,
+            datePaiement: datePaiement,
+            modeReglement: modeReglement,
+            remarqueReglement: remarqueReglement
+        });
+        
+        const projet = {
+            numeroProjet: document.getElementById('numeroProjet').value,
+            client: document.getElementById('client').value,
+            designation: document.getElementById('designation').value,
+            typeProjet: document.getElementById('typeProjet').value,
+            responsableInterne: document.getElementById('responsableInterne').value,
+            responsableExterne: document.getElementById('responsableExterne').value,
+            dureeContractuelle: document.getElementById('dureeContractuelle').value,
+            montantContratTTC: document.getElementById('montantContratTTC').value,
+            montantAvenant: document.getElementById('montantAvenant').value,
+
+            dateDebut: document.getElementById('dateDebut').value,
+            dateFinEffective: document.getElementById('dateFinEffective').value,
+            avancement: document.getElementById('pourcentageAvancement').value,
+            statutExecution: document.getElementById('statutExecution').value,
+            montantCumul: document.getElementById('montantCumul').value,
+            montantEncaisse: document.getElementById('montantEncaisse').value,
+            soldeRestant: document.getElementById('soldeRestant').value,
+            statutFacturation: document.getElementById('statutFacturation').value,
+            remarques: document.getElementById('remarques').value,
+            
+            // Nouveaux champs de suivi d'exécution détaillé
+            phase: phase,
+            zone: zone,
+            quantiteInstallee: quantiteInstallee,
+            remarquesExecution: remarquesExecution,
+            
+            // Nouveaux champs de suivi règlement détaillé
+            nAttachment: document.getElementById('nAttachment').value,
+            dateAttachement: document.getElementById('dateAttachement').value,
+            dateFacture: document.getElementById('dateFacture').value,
+            datePaiement: document.getElementById('datePaiement').value,
+            modeReglement: document.getElementById('modeReglement').value,
+            remarqueReglement: document.getElementById('remarqueReglement').value,
+            solde: document.getElementById('solde').value
+        };
+        const method = id ? 'PUT' : 'POST';
+        const url = id ? `/api/projets/${id}` : '/api/projets';
+        console.log('Envoi de la requête:', method, url);
+        console.log('Données du projet:', projet);
+        fetch(url, {
+            method: method,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(projet)
+        }).then(res => {
+            console.log('Réponse du serveur:', res.status, res.statusText);
+            if (res.ok) {
+                console.log('Projet enregistré avec succès !');
+                showAlert('Projet enregistré avec succès !', 'success');
+                bootstrap.Modal.getInstance(document.getElementById('projetModal')).hide();
+                // Rafraîchir les données du projet
+                fetch('/api/projets')
+                  .then(res => res.json())
+                  .then(data => {
+                    console.log('Rafraîchissement UI après enregistrement, projets:', data);
+                    projets = data;
+                    // Si c'est un nouveau projet, sélectionner le dernier
+                    if (!id) {
+                        selectedProjetIndex = projets.length - 1;
+                    }
+                    renderProjetSelector();
+                    renderSections();
+                  });
+            } else {
+                console.log('Erreur lors de l\'enregistrement !');
+                // Récupérer le message d'erreur détaillé
+                res.text().then(errorMsg => {
+                    console.error('Erreur serveur:', errorMsg);
+                    showAlert('Erreur lors de l\'enregistrement: ' + errorMsg, 'danger');
+                }).catch(() => {
+                    showAlert('Erreur lors de l\'enregistrement (code: ' + res.status + ')', 'danger');
+                });
+            }
+        }).catch(error => {
+            console.error('Erreur réseau:', error);
+            showAlert('Erreur de connexion lors de l\'enregistrement.', 'danger');
+        });
+    };
+}
+
+// Fonction pour ajouter une pièce jointe pour le suivi règlement détaillé
+function ajouterPieceJointeSuiviReglement() {
+    if (userRole === 'EMPLOYE') {
+        showAlert('Vous n\'avez pas les permissions pour effectuer cette action.', 'warning');
+        return;
+    }
+    const projet = projets[selectedProjetIndex];
+    if (!projet || !projet.id) {
+        showAlert('Aucun projet sélectionné', 'danger');
+        return;
+    }
+    document.getElementById('pieceJointeProjetId').value = projet.id;
+    document.getElementById('pieceJointeForm').reset();
+    // Définir automatiquement le type pour suivi règlement détaillé
+    const select = document.getElementById('typePieceJointe');
+    select.innerHTML = `
+        <option value=\"suivi_reglement_detaille\" selected>Suivi règlement détaillé</option>
+    `;
+    select.disabled = true;
+    // Ajoute ou met à jour un champ hidden pour garantir l'envoi du type
+    let hiddenType = document.getElementById('hiddenTypePieceJointe');
+    if (!hiddenType) {
+        hiddenType = document.createElement('input');
+        hiddenType.type = 'hidden';
+        hiddenType.id = 'hiddenTypePieceJointe';
+        hiddenType.name = 'hiddenTypePieceJointe';
+        select.parentNode.appendChild(hiddenType);
+    }
+    hiddenType.value = 'suivi_reglement_detaille';
+    const modal = new bootstrap.Modal(document.getElementById('pieceJointeModal'));
+    modal.show();
+    setTimeout(attachSavePieceJointeHandler, 0);
+}
 </script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -1327,6 +2091,7 @@ document.addEventListener('DOMContentLoaded', function() {
       `;
       const modal = new bootstrap.Modal(document.getElementById('pieceJointeModal'));
       modal.show();
+      setTimeout(attachSavePieceJointeHandler, 0);
     };
   }
 });
