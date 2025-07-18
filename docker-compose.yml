@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  # Base de données MySQL
+  mysql:
+    image: mysql:8.0
+    container_name: eetsecomdash-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: eetsecomdash
+      MYSQL_USER: eetsecom
+      MYSQL_PASSWORD: eetsecompassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - eetsecom-network
+
+  # Application Spring Boot
+  app:
+    build: .
+    container_name: eetsecomdash-app
+    depends_on:
+      - mysql
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - DB_USERNAME=eetsecom
+      - DB_PASSWORD=eetsecompassword
+      - JWT_SECRET=your-super-secret-jwt-key-for-production-2024
+      - ADMIN_USERNAME=admin
+      - ADMIN_PASSWORD=admin123
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./uploads:/app/uploads
+    networks:
+      - eetsecom-network
+    restart: unless-stopped
+
+volumes:
+  mysql_data:
+
+networks:
+  eetsecom-network:
+    driver: bridge 

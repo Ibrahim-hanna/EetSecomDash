@@ -21,6 +21,9 @@ public class ProjetService {
 
     @Autowired(required = false)
     private SimpMessagingTemplate messagingTemplate;
+    
+    @Autowired(required = false)
+    private WebSocketNotificationService webSocketNotificationService;
 
     public List<Projet> getAllProjets() {
         List<Projet> projets = projetRepository.findAll();
@@ -44,9 +47,19 @@ public class ProjetService {
         try {
             Projet saved = projetRepository.save(projet);
             System.out.println(">>> [ProjetService] Projet sauvegardé avec succès, ID: " + saved.getId());
-            if (messagingTemplate != null) {
+            
+            // Notifier via WebSocket
+            if (webSocketNotificationService != null) {
+                if (projet.getId() == null) {
+                    webSocketNotificationService.notifyProjetCreated(saved.getId());
+                } else {
+                    webSocketNotificationService.notifyProjetModified(saved.getId());
+                }
+                webSocketNotificationService.notifyProjetsListUpdate();
+            } else if (messagingTemplate != null) {
                 messagingTemplate.convertAndSend("/topic/projets", toDTO(saved));
             }
+            
             return saved;
         } catch (Exception e) {
             System.err.println(">>> [ProjetService] Erreur lors de la sauvegarde du projet: " + e.getMessage());
@@ -57,7 +70,12 @@ public class ProjetService {
 
     public void deleteProjet(Long id) {
         projetRepository.deleteById(id);
-        if (messagingTemplate != null) {
+        
+        // Notifier via WebSocket
+        if (webSocketNotificationService != null) {
+            webSocketNotificationService.notifyProjetDeleted(id);
+            webSocketNotificationService.notifyProjetsListUpdate();
+        } else if (messagingTemplate != null) {
             messagingTemplate.convertAndSend("/topic/projets", "deleted:" + id);
         }
     }
@@ -400,6 +418,7 @@ public class ProjetService {
                     System.out.println("DEBUG - Service: PV Provisoire mis à jour avec filename=" + filename);
                     break;
                 case "pvReceptionDefinitif":
+                case "pvReceptionDefinitive":
                     projet.setPvReceptionDefinitif(filename);
                     projet.setPvReceptionDefinitifDescription(description);
                     System.out.println("DEBUG - Service: PV Definitif mis à jour avec filename=" + filename);
@@ -457,6 +476,7 @@ public class ProjetService {
                     projet.setPvReceptionProvisoire(null);
                     break;
                 case "pvReceptionDefinitif":
+                case "pvReceptionDefinitive":
                     nomFichier = projet.getPvReceptionDefinitif();
                     projet.setPvReceptionDefinitif(null);
                     break;

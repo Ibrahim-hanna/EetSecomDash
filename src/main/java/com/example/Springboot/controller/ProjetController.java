@@ -38,9 +38,10 @@ public class ProjetController {
 
     // Synthèse globale pour tous les projets (ADMIN/SUPERVISEUR)
     @GetMapping("/synthese")
-    @PreAuthorize("hasAnyRole('ADMIN', 'SUPERVISEUR')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPERVISEUR', 'EMPLOYE')")
     public Map<String, Object> getSyntheseGlobale() {
         List<ProjetDTO> projets = projetService.getAllProjets().stream().map(projetService::toDTO).collect(Collectors.toList());
+        System.out.println(">>> [ProjetController] Calcul de la synthèse pour " + projets.size() + " projets");
         
         int projetsEnCours = (int) projets.stream().filter(p -> {
             String statut = p.getStatutExecution();
@@ -52,10 +53,18 @@ public class ProjetController {
                 try { return Double.parseDouble(p.getAvancement().replace("%", "").replace(",", ".").trim()); }
                 catch (Exception e) { return 0; }
             }).average().orElse(0);
-        double totalContrats = projets.stream()
-            .filter(p -> p.getMontantContratTTC() != null && !p.getMontantContratTTC().isEmpty())
-            .mapToDouble(p -> parseMontant(p.getMontantContratTTC()))
+        // Calcul du total montant TTC (somme de tous les montants cumulés d'attachement TTC)
+        // Le montant cumulé représente le total des attachements TTC pour chaque projet
+        double totalMontantTTC = projets.stream()
+            .filter(p -> p.getMontantCumul() != null && !p.getMontantCumul().isEmpty())
+            .mapToDouble(p -> {
+                double montantCumul = parseMontant(p.getMontantCumul());
+                System.out.println(">>> [ProjetController] Projet " + p.getNumeroProjet() + 
+                                 " - Montant cumulé TTC: " + montantCumul);
+                return montantCumul;
+            })
             .sum();
+        System.out.println(">>> [ProjetController] Total montant TTC (cumulé) calculé: " + totalMontantTTC);
         double totalEncaisse = projets.stream()
             .filter(p -> p.getMontantEncaisse() != null && !p.getMontantEncaisse().isEmpty())
             .mapToDouble(p -> parseMontant(p.getMontantEncaisse()))
@@ -77,7 +86,7 @@ public class ProjetController {
         Map<String, Object> synthese = new java.util.HashMap<>();
         synthese.put("projetsEnCours", projetsEnCours);
         synthese.put("avancementMoyen", Math.round(avancementMoyen));
-        synthese.put("totalContrats", totalContrats);
+        synthese.put("totalContrats", totalMontantTTC);
         synthese.put("totalEncaisse", totalEncaisse);
         synthese.put("soldeRestant", soldeRestant);
         synthese.put("pvReceptionDisponible", pvReceptionDisponible);

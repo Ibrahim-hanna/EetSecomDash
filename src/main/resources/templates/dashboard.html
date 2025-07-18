@@ -306,7 +306,7 @@
             <select class="form-select" id="typePieceJointe">
               <option value="">Sélectionner un type</option>
               <option value="pvReceptionProvisoire">PV de réception provisoire</option>
-              <option value="pvReceptionDefinitif">PV de réception définitif</option>
+              <option value="pvReceptionDefinitive">PV de réception définitif</option>
               <option value="attestationReference">Attestation de référence</option>
             </select>
           </div>
@@ -1064,7 +1064,7 @@ function updateReceptionSection(projet) {
           select.innerHTML = `
             <option value="">Sélectionner un type</option>
             <option value="pvReceptionProvisoire">PV de réception provisoire</option>
-            <option value="pvReceptionDefinitif">PV de réception définitif</option>
+            <option value="pvReceptionDefinitive">PV de réception définitif</option>
             <option value="attestationReference">Attestation de référence</option>
           `;
           const modal = new bootstrap.Modal(document.getElementById('pieceJointeModal'));
@@ -1685,7 +1685,7 @@ if (btnAddPieceJointe) {
           select.innerHTML = `
             <option value="">Sélectionner un type</option>
             <option value="pvReceptionProvisoire">PV de réception provisoire</option>
-            <option value="pvReceptionDefinitif">PV de réception définitive</option>
+            <option value="pvReceptionDefinitive">PV de réception définitive</option>
             <option value="attestationReference">Attestation de référence</option>
           `;
           const modal = new bootstrap.Modal(document.getElementById('pieceJointeModal'));
@@ -1733,9 +1733,13 @@ function attachSavePieceJointeHandler() {
                 if (projet && projet.piecesJointes && projet.piecesJointes[type] && projet.piecesJointes[type].nomFichier) {
                     nomFichier = projet.piecesJointes[type].nomFichier;
                 }
+                // Si on n'a pas trouvé le nom du fichier dans piecesJointes, on ne l'envoie pas
+                // Le backend récupérera automatiquement le nom depuis la base de données
                 if (nomFichier) {
                     formData.append('nomFichier', nomFichier);
                 }
+                // Ajouter un flag pour indiquer qu'il s'agit d'une modification
+                formData.append('modification', 'true');
             }
             
             fetch('/api/pieces-jointes', {
@@ -1813,6 +1817,26 @@ function modifierPieceJointe(type) {
     document.getElementById('typePieceJointe').value = type;
     document.getElementById('typePieceJointe').disabled = true;
     document.getElementById('typePieceJointe').setAttribute('data-current-type', type);
+    
+    // Créer ou mettre à jour le champ caché pour le type
+    let hiddenType = document.getElementById('hiddenTypePieceJointe');
+    if (!hiddenType) {
+        hiddenType = document.createElement('input');
+        hiddenType.type = 'hidden';
+        hiddenType.id = 'hiddenTypePieceJointe';
+        hiddenType.name = 'hiddenTypePieceJointe';
+        document.getElementById('typePieceJointe').parentNode.appendChild(hiddenType);
+    }
+    hiddenType.value = type;
+    
+    // Pré-remplir la description existante si disponible
+    if (projet.piecesJointes && projet.piecesJointes[type] && projet.piecesJointes[type].description) {
+        document.getElementById('descriptionPieceJointe').value = projet.piecesJointes[type].description;
+    }
+    
+    // Changer le titre de la modale pour indiquer qu'il s'agit d'une modification
+    document.getElementById('pieceJointeModalLabel').textContent = 'Modifier la pièce jointe';
+    
     const modal = new bootstrap.Modal(document.getElementById('pieceJointeModal'));
     modal.show();
     setTimeout(attachSavePieceJointeHandler, 0);
@@ -1822,6 +1846,8 @@ function modifierPieceJointe(type) {
 function ouvrirAjoutPieceJointe() {
     document.getElementById('pieceJointeForm').reset();
     document.getElementById('typePieceJointe').disabled = false;
+    // Remettre le titre original pour l'ajout
+    document.getElementById('pieceJointeModalLabel').textContent = 'Ajouter une pièce jointe';
     const modal = new bootstrap.Modal(document.getElementById('pieceJointeModal'));
     modal.show();
 }
@@ -1831,6 +1857,8 @@ const pieceJointeModal = document.getElementById('pieceJointeModal');
 if (pieceJointeModal) {
     pieceJointeModal.addEventListener('hidden.bs.modal', function () {
         document.getElementById('typePieceJointe').disabled = false;
+        // Remettre le titre original
+        document.getElementById('pieceJointeModalLabel').textContent = 'Ajouter une pièce jointe';
     });
 }
 

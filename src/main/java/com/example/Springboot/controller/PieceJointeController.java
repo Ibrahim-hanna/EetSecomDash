@@ -33,7 +33,8 @@ public class PieceJointeController {
     public ResponseEntity<?> ajouterPieceJointe(
             @RequestParam("projetId") Long projetId,
             @RequestParam("type") String type,
-            @RequestParam("fichier") MultipartFile fichier,
+            @RequestParam(value = "fichier", required = false) MultipartFile fichier,
+            @RequestParam(value = "nomFichier", required = false) String nomFichier,
             @RequestParam(value = "description", required = false) String description) {
         
         try {
@@ -48,34 +49,87 @@ public class PieceJointeController {
                 return ResponseEntity.status(403).body("Accès non autorisé");
             }
 
-            // Créer le répertoire d'upload s'il n'existe pas
-            Path uploadPath = Paths.get(UPLOAD_DIR);
-            if (!Files.exists(uploadPath)) {
-                Files.createDirectories(uploadPath);
-            }
+            String filename;
+            
+            // Si un nouveau fichier est fourni, le traiter
+            if (fichier != null && !fichier.isEmpty()) {
+                // Créer le répertoire d'upload s'il n'existe pas
+                Path uploadPath = Paths.get(UPLOAD_DIR);
+                if (!Files.exists(uploadPath)) {
+                    Files.createDirectories(uploadPath);
+                }
 
-            // Générer un nom de fichier unique
-            String originalFilename = fichier.getOriginalFilename();
-            String extension = "";
-            if (originalFilename != null && originalFilename.contains(".")) {
-                extension = originalFilename.substring(originalFilename.lastIndexOf("."));
-            }
-            String filename = UUID.randomUUID().toString() + extension;
+                // Générer un nom de fichier unique
+                String originalFilename = fichier.getOriginalFilename();
+                String extension = "";
+                if (originalFilename != null && originalFilename.contains(".")) {
+                    extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+                }
+                filename = UUID.randomUUID().toString() + extension;
 
-            // Sauvegarder le fichier
-            Path filePath = uploadPath.resolve(filename);
-            Files.copy(fichier.getInputStream(), filePath);
+                // Sauvegarder le fichier
+                Path filePath = uploadPath.resolve(filename);
+                Files.copy(fichier.getInputStream(), filePath);
+            } else if (nomFichier != null && !nomFichier.trim().isEmpty()) {
+                // Modification d'une pièce jointe existante sans nouveau fichier
+                filename = nomFichier.trim();
+                System.out.println("DEBUG - Utilisation du nom de fichier fourni: " + filename);
+            } else {
+                // Pour les modifications de description uniquement, on doit récupérer le nom du fichier existant
+                // depuis la base de données
+                System.out.println("DEBUG - Récupération du nom de fichier depuis la base de données pour le type: " + type);
+                try {
+                    var projetOpt = projetService.getProjetById(projetId);
+                    if (projetOpt.isPresent()) {
+                        var projet = projetOpt.get();
+                        switch (type) {
+                            case "contrat":
+                                filename = projet.getContratPieceJointe();
+                                break;
+                            case "pvReceptionProvisoire":
+                                filename = projet.getPvReceptionProvisoire();
+                                break;
+                            case "pvReceptionDefinitive":
+                            case "pvReceptionDefinitif":
+                                filename = projet.getPvReceptionDefinitif();
+                                break;
+                            case "attestationReference":
+                                filename = projet.getAttestationReference();
+                                break;
+                            case "suivi_execution_detaille":
+                                filename = projet.getSuiviExecutionDetaillePieceJointe();
+                                break;
+                            case "suivi_reglement_detaille":
+                                filename = projet.getSuiviReglementDetaillePieceJointe();
+                                break;
+                            default:
+                                return ResponseEntity.badRequest().body("Type de pièce jointe non reconnu: " + type);
+                        }
+                        
+                        System.out.println("DEBUG - Nom de fichier récupéré depuis la base: " + filename);
+                        
+                        if (filename == null || filename.trim().isEmpty()) {
+                            return ResponseEntity.badRequest().body("Aucune pièce jointe existante trouvée pour le type: " + type);
+                        }
+                    } else {
+                        return ResponseEntity.badRequest().body("Projet non trouvé avec l'ID: " + projetId);
+                    }
+                } catch (Exception e) {
+                    System.out.println("DEBUG - Exception lors de la récupération du projet: " + e.getMessage());
+                    return ResponseEntity.status(500).body("Erreur lors de la récupération du projet: " + e.getMessage());
+                }
+            }
 
             // Mettre à jour le projet avec la nouvelle pièce jointe
-            System.out.println("DEBUG - Ajout pièce jointe: projetId=" + projetId + ", type=" + type + ", filename=" + filename);
+            System.out.println("DEBUG - Ajout/Modification pièce jointe: projetId=" + projetId + ", type=" + type + ", filename=" + filename + ", description=" + description);
             boolean success = projetService.ajouterPieceJointe(projetId, type, filename, description);
             
             if (success) {
-                System.out.println("DEBUG - Pièce jointe ajoutée avec succès");
-                return ResponseEntity.ok().body("Pièce jointe ajoutée avec succès");
+                System.out.println("DEBUG - Pièce jointe ajoutée/modifiée avec succès");
+                return ResponseEntity.ok().body("Pièce jointe enregistrée avec succès");
             } else {
-                System.out.println("DEBUG - Erreur lors de l'ajout de la pièce jointe");
-                return ResponseEntity.badRequest().body("Erreur lors de l'ajout de la pièce jointe");
+                System.out.println("DEBUG - Erreur lors de l'ajout/modification de la pièce jointe");
+                return ResponseEntity.badRequest().body("Erreur lors de l'enregistrement de la pièce jointe");
             }
 
         } catch (IOException e) {
